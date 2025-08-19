@@ -3,10 +3,15 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-  <>
-    <header>
+    <>
+    <header className="w-full h-md">
       <Link href="#">Sprak</Link>
-      
+      <nav>
+      <Link href="#">Home</Link>
+      <Link href="#">About</Link>
+      <Link href="#">Skill</Link>
+      <Link href="#">Contact</Link>
+      </nav>
     </header>
   </>);
 }
