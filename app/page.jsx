@@ -4,7 +4,7 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <>
-    <header className="w-full h-md">
+    <header className="w-full h-md flex ">
       <Link href="#">Sprak</Link>
       <nav>
       <Link href="#">Home</Link>
