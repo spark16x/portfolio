@@ -4,9 +4,9 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <>
-    <header className="w-full h-[50px] flex justify-around">
+    <header className="w-full h-[50px] flex justify-between">
       <Link href="#" className="text-red-500" >Sprak</Link>
-      <nav className="h-full flex justify-around">
+      <nav className=" flex justify-around">
       <Link href="#" className="">Home</Link>
       <Link href="#" className="">About</Link>
       <Link href="#" className="">Skill</Link>
