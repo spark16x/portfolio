@@ -36,4 +36,7 @@ if (isMobile) {
     })
   }); //or customize things:
   
+} else {
+ 
+  
 }
