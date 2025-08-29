@@ -1,0 +1,13 @@
+# Allow all search engine crawlers access to the entire site
+User-agent: *
+Allow: /
+
+# Disallow crawling of specific directories or pages that are not intended for public search results
+Disallow: /private/
+Disallow: /admin/
+Disallow: /login/
+Disallow: /api/
+
+# Specify the path to your XML sitemap
+# Replace this with the actual URL of your sitemap
+Sitemap: https://spark16x.vercel.app/sitemap.xml
