@@ -6,6 +6,7 @@ const typingText = Typify('.typing', {
   stringDelay: 1000
 });
 
+
 let menuBtn = document.querySelector("#menu-b")
 let a = document.querySelectorAll("#menu a");
 let isMobile = window.innerWidth < 640;

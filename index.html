@@ -10,6 +10,13 @@
   
   <title>Spark16x</title>
   
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/logo/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/logo/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/logo/favicon-16x16.png">
+  <link rel="manifest" href="/logo/site.webmanifest">
+  <!--   Favicons -->
+  
   <!-- Open Graph Tags -->
   <meta property="og:title" content="Spark16x">
   <meta property="og:type" content="website">
@@ -33,7 +40,7 @@
   
 </head>
 
-<body class="w-full h-dvh relative ">
+<body class="w-full h-dvh relative " data-barba="wrapper">
   <header class="w-full h-[50px] flex justify-between items-center  fixed top-0 left-0 bg-[#0a0a0a]">
     <a href="#" class="p-[10px] font-medium text-blue-500 text-2xl text-bold font-[Cookie] sm:text-[35px] ">Sprak</a>
     <nav id="menu" class="sm:w-1/2 sm:h-full sm:flex-row sm:bg-transparent flex sm:justify-around sm:relative   w-full h-dvh top-[0px] left-full sm:left-0 flex-col fixed bg-zinc-900 justify-center gap-[20px] items-center text-2xl sm:text-lg sm:flex z-10 ">
@@ -47,7 +54,7 @@
         <path id="Vector" d="M5 15H19M5 9H19" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
       </svg></button>
   </header>
-  <section id="home" class="flex flex-col items-center sm:flex-row m-[50px]">
+  <section id="home" class="flex flex-col items-center sm:flex-row m-[50px]" data-barba="container" data-barba-namespace="home">
     <div class=" w-1/3  overflow-hidden rounded-[100%] m-[20px]  sm:mx-[120px] shadow-[0px_0px_20px] shadow-blue-500 duration-350 hover:scale-110 hover:shadow-[0px_0px_30px]">
       <img class="" src="/char.jpeg" alt="" />
     </div>
@@ -67,7 +74,7 @@
     
   </section>
   
-<!--   <section id="about" class="w-full h-full flex ">
+  <!--   <section id="about" class="w-full h-full flex ">
 </section>
 
   <section id="skills" class="w-full h-full flex ">
@@ -83,6 +90,14 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrambleTextPlugin.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/TextPlugin.min.js"></script>
+  
+  <script src="https://unpkg.com/@barba/core"></script>
+  
+  <script>
+    barba.init({
+      // ...
+    })
+  </script>
   
   <!--   gsap end -->
   
