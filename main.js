@@ -4,24 +4,29 @@ let isMobile = window.innerWidth < 640;
 let menuItems = ['Home', 'About', 'Skills', 'Contact']
 let mOpen = false;
 
-window.addEventListener('load',()=>{
+window.addEventListener('load', () => {
   console.log('loaded')
-  gsap.to('#loading',{opacity:0,duration:1,delay:1})
-  setTimeout(()=>document.querySelector('#loading').classList.add('hidden'),2000)
+  gsap.to('#loading', {
+    opacity: 0,
+    duration: 1,
+    scale: 3,
+    delay: 1
+  })
+  setTimeout(() => document.querySelector('#loading').classList.add('hidden'), 2000)
   
   
-
+  
 })
 
 if (isMobile) {
   menuBtn.addEventListener('click', (ev) => {
     if (!mOpen) {
       gsap.to('#Vector', { duration: 0.5, morphSVG: 'M20 20L4 4.00003M20 4L4.00002 20' });
-      gsap.to('#menu', { duration: 0.5, x: '-100%'  ,ease: "power4.Out"})
+      gsap.to('#menu', { duration: 0.5, x: '-100%', ease: "power4.Out" })
       mOpen = true;
     } else {
       gsap.to('#Vector', { duration: 0.5, morphSVG: 'M5 15H19M5 9H19' });
-      gsap.to('#menu', { duration: 0.5, x: '100%' ,ease: "power4.Out"})
+      gsap.to('#menu', { duration: 0.5, x: '100%', ease: "power4.Out" })
       
       mOpen = false;
     }
