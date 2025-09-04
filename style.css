@@ -1,6 +1,13 @@
+*{
+  cursor: none;
+}
 body {
   background :#0a0a0a ;
   color:#ededed;
-  
+  cursor: none;
 }
 
+#cursor{
+  pointer-events: none;
+  mix-blend-mode: difference;
+}

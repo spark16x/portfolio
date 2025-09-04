@@ -60,3 +60,11 @@ const typingText = Typify('.typing', {
   cursor: true,
   stringDelay: 1000
 });
+
+window.addEventListener('mousemove', (ev) => {
+ console.log(ev.clientX,ev.clientY)
+ gsap.to('#cursor',  {
+   x: ev.clientX,
+   y:ev.clientY,duration:0.1
+ })
+})
