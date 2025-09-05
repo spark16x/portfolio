@@ -3,6 +3,7 @@ let a = document.querySelectorAll("#menu a");
 let isMobile = window.innerWidth < 640;
 let menuItems = ['Home', 'About', 'Skills', 'Contact']
 let mOpen = false;
+let hT=document.querySelectorAll('.hT')
 
 window.addEventListener('load', () => {
   console.log('loaded')
@@ -53,6 +54,7 @@ if (isMobile) {
   
   
 }
+
 const typingText = Typify('.typing', {
   text: ['Web developer', 'Frontend developer', 'Backend developer'],
   delay: 100,
@@ -62,9 +64,21 @@ const typingText = Typify('.typing', {
 });
 
 window.addEventListener('mousemove', (ev) => {
- console.log(ev.clientX,ev.clientY)
  gsap.to('#cursor',  {
    x: ev.clientX,
    y:ev.clientY,duration:0.1
  })
+})
+
+hT.forEach((ele)=>{
+  ele.addEventListener('pointerenter',(ev)=>{
+     gsap.to('#cursor',  {
+   scale:2
+ })
+  })
+  ele.addEventListener('pointerleave', (ev) => {
+  gsap.to('#cursor', {
+    scale: 1
+  })
+})
 })

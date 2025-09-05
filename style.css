@@ -1,6 +1,10 @@
 *{
   cursor: none;
 }
+*::selection{
+  background: oklch(62.3% 0.214 259.815);
+  color:#0a0a0a;
+}
 body {
   background :#0a0a0a ;
   color:#ededed;
@@ -9,5 +13,5 @@ body {
 
 #cursor{
   pointer-events: none;
-  mix-blend-mode: difference;
+  
 }
