@@ -1,17 +1,43 @@
-*{
-  cursor: none;
-}
-*::selection{
-  background: oklch(62.3% 0.214 259.815);
-  color:#0a0a0a;
-}
-body {
-  background :#0a0a0a ;
-  color:#ededed;
+* {
   cursor: none;
 }
 
-#cursor{
+*::selection {
+  background: oklch(62.3% 0.214 259.815);
+  color: #0a0a0a;
+}
+
+body {
+  background: #0a0a0a;
+  color: #ededed;
+  cursor: none;
+}
+
+#cursor {
   pointer-events: none;
   
+}
+.loading-logo{
+  width: 30%;
+}
+.loading-logo path {
+
+  fill: transparent;
+  stroke: #0095ff;
+  stroke-width: 0.3;
+  stroke-dasharray: 150;
+  stroke-dashoffset: 150;
+  animation: textAnimation 4s ease-in-out 1 forwards;
+}
+@keyframes textAnimation {
+  0% {
+    stroke-dashoffset:150;
+  }
+  80% {
+    fill: transparent;
+  }
+  100% {
+    fill: #0095ff;
+    stroke-dashoffset: 0;
+  }
 }

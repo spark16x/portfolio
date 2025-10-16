@@ -11,9 +11,9 @@ window.addEventListener('load', () => {
     opacity: 0,
     duration: 1,
     scale: 3,
-    delay: 1
+    delay: 5
   })
-  setTimeout(() => document.querySelector('#loading').classList.add('hidden'), 2000)
+  setTimeout(() => document.querySelector('#loading').classList.add('hidden'), 6000)
   
   
   
