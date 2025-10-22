@@ -64,6 +64,7 @@ const typingText = Typify('.typing', {
 });
 
 window.addEventListener('mousemove', (ev) => {
+  gsap.set('#cursor',{display:"block"})
  gsap.to('#cursor',  {
    x: ev.clientX,
    y:ev.clientY,duration:0.1

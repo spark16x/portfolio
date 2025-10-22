@@ -24,7 +24,7 @@ body {
 
   fill: transparent;
   stroke: #0095ff;
-  stroke-width: 0.3;
+  stroke-width: 1;
   stroke-dasharray: 150;
   stroke-dashoffset: 150;
   animation: textAnimation 4s ease-in-out 1 forwards;
