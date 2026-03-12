@@ -1,7 +1,3 @@
-* {
-  cursor: none;
-}
-
 *::selection {
   background: oklch(62.3% 0.214 259.815);
   color: #0a0a0a;
@@ -10,34 +6,63 @@
 body {
   background: #0a0a0a;
   color: #ededed;
-  cursor: none;
 }
 
 #cursor {
   pointer-events: none;
-  
 }
-.loading-logo{
+
+.loading-logo {
   width: 30%;
 }
-.loading-logo path {
 
+.loading-logo path {
   fill: transparent;
   stroke: #0095ff;
   stroke-width: 1;
   stroke-dasharray: 150;
   stroke-dashoffset: 150;
-  animation: textAnimation 4s ease-in-out 1 forwards;
+  animation: textAnimation 2.2s ease-in-out 1 forwards;
 }
+
+.skill-bar {
+  transform-origin: left;
+  animation: growBar 1.4s ease both;
+}
+
 @keyframes textAnimation {
   0% {
-    stroke-dashoffset:150;
+    stroke-dashoffset: 150;
   }
+
   80% {
     fill: transparent;
   }
+
   100% {
     fill: #0095ff;
     stroke-dashoffset: 0;
+  }
+}
+
+@keyframes growBar {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body {
+    cursor: none;
+  }
+
+  a,
+  button,
+  .hT {
+    cursor: none;
   }
 }
