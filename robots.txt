@@ -1,6 +1,10 @@
 # Allow all search engine crawlers access to the entire site
 User-agent: *
 Allow: /
+Allow: /#home
+Allow: /#about
+Allow: /#skills
+Allow: /#contact
 
 # Disallow crawling of specific directories or pages that are not intended for public search results
 Disallow: /private/

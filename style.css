@@ -27,7 +27,7 @@ body {
 
 .skill-bar {
   transform-origin: left;
-  animation: growBar 1.4s ease both;
+  transform: scaleX(0);
 }
 
 @keyframes textAnimation {
@@ -45,15 +45,6 @@ body {
   }
 }
 
-@keyframes growBar {
-  from {
-    transform: scaleX(0);
-  }
-
-  to {
-    transform: scaleX(1);
-  }
-}
 
 @media (hover: hover) and (pointer: fine) {
   body {

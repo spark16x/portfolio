@@ -81,6 +81,7 @@ function onMouseMove(event) {
     x: event.clientX,
     y: event.clientY,
     duration: 0.08,
+    ease: 'bounce'
   });
 }
 
@@ -127,14 +128,14 @@ window.addEventListener('load', () => {
   if (!loadingScreen) return;
   gsap.to(loadingScreen, {
     opacity: 0,
-    scale: 1.1,
-    duration: 0.6,
-    delay: 0.25,
+    scale: 2,
+    duration: 1,
+    delay: 2,
     onComplete: () => {
       loadingScreen.classList.add('hidden');
     },
   });
-
+  
   setTimeout(() => {
     loadingScreen.classList.add('hidden');
   }, 2500);
@@ -152,12 +153,24 @@ menuLinks.forEach((link, i) => {
 });
 
 Typify('.typing', {
-  text: ['Creative Web Developer', 'Frontend Builder', 'Backend Explorer'],
+  text: ['Creative Web Developer', 'Frontend Builder', 'Backend Explorer', 'App builder'],
   delay: 90,
   loop: true,
   cursor: true,
   stringDelay: 1000,
 });
+
+gsap.to('.skill-bar',{
+  scrollTrigger:{
+    trigger:'#skills',
+    start:'top top',
+    end :'+=500',
+    scrub:0.5,
+    snap:0.1,
+  },
+  scaleX:1,
+  duration:1.4
+})
 
 handleViewportChange();
 handlePointerMode();
