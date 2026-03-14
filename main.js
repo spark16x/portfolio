@@ -9,6 +9,7 @@ const customCursor = document.querySelector('#cursor');
 
 const mobileQuery = window.matchMedia('(max-width: 639px)');
 const finePointerQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
+const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 let menuOpen = false;
 let mobileBound = false;
@@ -81,7 +82,7 @@ function onMouseMove(event) {
     x: event.clientX,
     y: event.clientY,
     duration: 0.08,
-    ease: 'bounce'
+    ease: 'bounce',
   });
 }
 
@@ -124,6 +125,33 @@ function handlePointerMode() {
   }
 }
 
+function initFullPageScrollAnimations() {
+  if (reducedMotionQuery.matches || typeof ScrollTrigger === 'undefined') return;
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const revealTargets = gsap.utils.toArray('section, section article, section h2, section p, section .hT');
+
+  revealTargets.forEach((element, index) => {
+    gsap.fromTo(
+      element,
+      { autoAlpha: 0, y: 42 },
+      {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+        delay: Math.min(index * 0.02, 0.18),
+        scrollTrigger: {
+          trigger: element,
+          start: 'top 88%',
+          once: true,
+        },
+      }
+    );
+  });
+}
+
 window.addEventListener('load', () => {
   if (!loadingScreen) return;
   gsap.to(loadingScreen, {
@@ -135,7 +163,7 @@ window.addEventListener('load', () => {
       loadingScreen.classList.add('hidden');
     },
   });
-  
+
   setTimeout(() => {
     loadingScreen.classList.add('hidden');
   }, 2500);
@@ -160,20 +188,21 @@ Typify('.typing', {
   stringDelay: 1000,
 });
 
-gsap.to('.skill-bar',{
-  scrollTrigger:{
-    trigger:'#skills',
-    start:'top top',
-    end :'+=500',
-    scrub:0.5,
-    snap:0.1,
+gsap.to('.skill-bar', {
+  scrollTrigger: {
+    trigger: '#skills',
+    start: 'top top',
+    end: '+=500',
+    scrub: 0.5,
+    snap: 0.1,
   },
-  scaleX:1,
-  duration:1.4
-})
+  scaleX: 1,
+  duration: 1.4,
+});
 
 handleViewportChange();
 handlePointerMode();
+initFullPageScrollAnimations();
 
 mobileQuery.addEventListener('change', handleViewportChange);
 finePointerQuery.addEventListener('change', handlePointerMode);
