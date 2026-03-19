@@ -28,6 +28,7 @@ body {
 .skill-bar {
   transform-origin: left;
   transform: scaleX(0);
+
 }
 
 @keyframes textAnimation {
