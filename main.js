@@ -183,7 +183,7 @@ $(document).ready(function () {
       perturbance: 0.04
     });
 
-    $(document).on('mousemove', function (e) {
+    $('#home').on('mousemove', function (e) {
       $('#home').ripples('drop', e.clientX, e.clientY, 10, 0.04);
     });
 
