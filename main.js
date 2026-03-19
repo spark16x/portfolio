@@ -30,35 +30,35 @@ if (typeof gsap !== 'undefined') {
 
 function openMenu() {
   if (!menuVector || !menu) return;
-
+  
   gsap.to(menuVector, {
     duration: 0.35,
     morphSVG: 'M20 20L4 4.00003M20 4L4.00002 20'
   });
-
+  
   gsap.to(menu, {
     duration: 0.4,
     x: '0%',
     ease: 'power4.out'
   });
-
+  
   menuOpen = true;
 }
 
 function closeMenu() {
   if (!menuVector || !menu) return;
-
+  
   gsap.to(menuVector, {
     duration: 0.35,
     morphSVG: 'M5 15H19M5 9H19'
   });
-
+  
   gsap.to(menu, {
     duration: 0.35,
     x: '100%',
     ease: 'power4.out'
   });
-
+  
   menuOpen = false;
 }
 
@@ -73,32 +73,32 @@ function onMenuLinkClick() {
 
 function bindMobileMenu() {
   if (mobileBound || !menuBtn) return;
-
+  
   menuBtn.addEventListener('click', onMenuButtonClick);
   menuLinks.forEach(link =>
     link.addEventListener('click', onMenuLinkClick)
   );
-
+  
   mobileBound = true;
 }
 
 function unbindMobileMenu() {
   if (!mobileBound || !menuBtn) return;
-
+  
   menuBtn.removeEventListener('click', onMenuButtonClick);
   menuLinks.forEach(link =>
     link.removeEventListener('click', onMenuLinkClick)
   );
-
+  
   mobileBound = false;
 }
 
 function resetDesktopMenu() {
   if (!menu || !menuVector) return;
-
+  
   gsap.set(menu, { clearProps: 'x' });
   gsap.set(menuVector, { attr: { d: 'M5 15H19M5 9H19' } });
-
+  
   menuOpen = false;
 }
 
@@ -116,9 +116,9 @@ function handleViewportChange() {
 
 function onMouseMove(e) {
   if (!customCursor) return;
-
+  
   gsap.set(customCursor, { display: 'block' });
-
+  
   gsap.to(customCursor, {
     x: e.clientX,
     y: e.clientY,
@@ -139,29 +139,29 @@ function onHoverLeave() {
 
 function bindCustomCursor() {
   if (cursorBound || !customCursor) return;
-
+  
   window.addEventListener('mousemove', onMouseMove);
-
+  
   hoverTargets.forEach(el => {
     el.addEventListener('pointerenter', onHoverEnter);
     el.addEventListener('pointerleave', onHoverLeave);
   });
-
+  
   cursorBound = true;
 }
 
 function unbindCustomCursor() {
   if (!cursorBound || !customCursor) return;
-
+  
   window.removeEventListener('mousemove', onMouseMove);
-
+  
   hoverTargets.forEach(el => {
     el.removeEventListener('pointerenter', onHoverEnter);
     el.removeEventListener('pointerleave', onHoverLeave);
   });
-
+  
   gsap.set(customCursor, { display: 'none', scale: 1 });
-
+  
   cursorBound = false;
 }
 
@@ -175,36 +175,39 @@ function handlePointerMode() {
 
 /* ---------------- RIPPLE ---------------- */
 
-$(document).ready(function () {
+$(document).ready(function() {
   try {
     $('#home').ripples({
       resolution: 512,
       dropRadius: 20,
       perturbance: 0.04
     });
-
-    $('#home').on('mousemove', function (e) {
-      $('#home').ripples('drop', e.clientX, e.clientY, 10, 0.04);
+    
+    $('#home').on('mousemove', function(e) {
+      $('#home').ripples('drop', e.x, e.y, 10, 0.04);
+      console.log(e)
     });
-
+    
   } catch (e) {
     console.warn('Ripples not supported');
-  }
+  
+    
+  
+}
 });
 
 /* ---------------- SCROLL ANIMATIONS ---------------- */
 
 function initFullPageScrollAnimations() {
   if (reducedMotionQuery.matches || typeof ScrollTrigger === 'undefined') return;
-
+  
   const revealTargets = gsap.utils.toArray(
     'section, section article, section h2, section p, section .hT'
   );
-
+  
   revealTargets.forEach((el, i) => {
     gsap.fromTo(
-      el,
-      { autoAlpha: 0, y: 42 },
+      el, { autoAlpha: 0, y: 42 },
       {
         autoAlpha: 1,
         y: 0,
@@ -225,7 +228,7 @@ function initFullPageScrollAnimations() {
 
 window.addEventListener('load', () => {
   if (!loadingScreen) return;
-
+  
   gsap.to(loadingScreen, {
     opacity: 0,
     scale: 1.5,
@@ -240,7 +243,7 @@ window.addEventListener('load', () => {
 menuLinks.forEach((link, i) => {
   link.addEventListener('pointerenter', () => {
     if (typeof ScrambleTextPlugin === 'undefined') return;
-
+    
     gsap.to(link, {
       duration: 0.8,
       scrambleText: {
@@ -290,3 +293,4 @@ initFullPageScrollAnimations();
 
 mobileQuery.addEventListener('change', handleViewportChange);
 finePointerQuery.addEventListener('change', handlePointerMode);
+
