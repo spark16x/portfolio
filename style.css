@@ -4,8 +4,9 @@
 }
 
 body {
-  background: #0a0a0a;
+  background: #050505;
   color: #ededed;
+  overflow-x: hidden;
 }
 
 #cursor {

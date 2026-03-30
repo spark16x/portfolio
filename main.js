@@ -179,21 +179,25 @@ $(document).ready(function() {
   try {
     $('#home').ripples({
       resolution: 512,
-      dropRadius: 20,
-      perturbance: 0.04
+      dropRadius: 30,
+      perturbance: 0.08
     });
     
+    let lastRippleTime = 0;
     $('#home').on('mousemove', function(e) {
-      $('#home').ripples('drop', e.x, e.y, 10, 0.04);
-      console.log(e)
+      const now = Date.now();
+      if (now - lastRippleTime < 80) return;
+      lastRippleTime = now;
+
+      const offsetX = e.pageX - $(this).offset().left;
+      const offsetY = e.pageY - $(this).offset().top;
+
+      $('#home').ripples('drop', offsetX, offsetY, 10, 0.04);
     });
     
   } catch (e) {
-    console.warn('Ripples not supported');
-  
-    
-  
-}
+    console.warn('Ripples not supported:', e);
+  }
 });
 
 /* ---------------- SCROLL ANIMATIONS ---------------- */
