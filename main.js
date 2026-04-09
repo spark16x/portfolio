@@ -38,7 +38,7 @@ function openMenu() {
   
   gsap.to(menu, {
     duration: 0.4,
-    x: '0%',
+    x: '-100%',
     ease: 'power4.out'
   });
   
@@ -55,7 +55,7 @@ function closeMenu() {
   
   gsap.to(menu, {
     duration: 0.35,
-    x: '100%',
+    x: '0%',
     ease: 'power4.out'
   });
   
