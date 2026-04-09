@@ -36,9 +36,11 @@ function openMenu() {
     morphSVG: 'M20 20L4 4.00003M20 4L4.00002 20'
   });
   
+  gsap.set(menu, { x: '-100%', clipPath: 'circle(0px at calc(100% - 35px) 29px)' });
+
   gsap.to(menu, {
-    duration: 0.4,
-    x: '-100%',
+    duration: 0.5,
+    clipPath: 'circle(150% at calc(100% - 35px) 29px)',
     ease: 'power4.out'
   });
   
@@ -54,9 +56,14 @@ function closeMenu() {
   });
   
   gsap.to(menu, {
-    duration: 0.35,
-    x: '0%',
-    ease: 'power4.out'
+    duration: 0.4,
+    clipPath: 'circle(0px at calc(100% - 35px) 29px)',
+    ease: 'power4.out',
+    onComplete: () => {
+      if (!menuOpen) {
+        gsap.set(menu, { x: '0%' });
+      }
+    }
   });
   
   menuOpen = false;
@@ -96,7 +103,7 @@ function unbindMobileMenu() {
 function resetDesktopMenu() {
   if (!menu || !menuVector) return;
   
-  gsap.set(menu, { clearProps: 'x' });
+  gsap.set(menu, { clearProps: 'x,clipPath' });
   gsap.set(menuVector, { attr: { d: 'M5 15H19M5 9H19' } });
   
   menuOpen = false;
