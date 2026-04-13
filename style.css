@@ -1,11 +1,11 @@
 *::selection {
-  background: oklch(62.3% 0.214 259.815);
-  color: #0a0a0a;
+  background: #F0EDE5;
+  color: #004643;
 }
 
 body {
-  background: #050505;
-  color: #ededed;
+  background: #004643;
+  color: #F0EDE5;
   overflow-x: hidden;
 }
 
@@ -19,7 +19,7 @@ body {
 
 .loading-logo path {
   fill: transparent;
-  stroke: #0095ff;
+  stroke: #F0EDE5;
   stroke-width: 1;
   stroke-dasharray: 150;
   stroke-dashoffset: 150;
@@ -42,7 +42,7 @@ body {
   }
 
   100% {
-    fill: #0095ff;
+    fill: #F0EDE5;
     stroke-dashoffset: 0;
   }
 }
