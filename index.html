@@ -1,192 +1,554 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
-
+<html class="light scroll-smooth" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="google-site-verification" content="7SnpTJD94MylkjVp3A2GY9wDF1Xhvs1yLkq_AH7nJxQ" />
-  <meta name="description" content="Hi, I’m Spark (Pratham Vig), and this is my creative portfolio.">
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta name="google-site-verification" content="7SnpTJD94MylkjVp3A2GY9wDF1Xhvs1yLkq_AH7nJxQ" />
+    <meta name="description" content="Hi, I’m Spark (Pratham Vig), and this is my creative portfolio.">
 
-  <title>Spark - Pratham Vig</title>
+    <title>Spark - Pratham Vig | Building Digital Experiences</title>
 
-  <!-- Favicons -->
-  <link rel="apple-touch-icon" sizes="180x180" href="/logo/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/logo/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/logo/favicon-16x16.png">
-  <link rel="manifest" href="/logo/site.webmanifest">
-  <!-- Favicons -->
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/logo/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/logo/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/logo/favicon-16x16.png">
+    <link rel="manifest" href="/logo/site.webmanifest">
+    <!-- Favicons -->
 
-  <!-- Open Graph Tags -->
-  <meta property="og:title" content="Spark - Pratham Vig">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://spark16x.vercel.app">
-  <meta property="og:image" content="/page.png">
-  <meta property="og:description" content="Hi, I’m Spark (Pratham Vig), and this is my creative portfolio.">
-  <meta property="og:site_name" content="Spark - Home">
-  <!-- End Open Graph Tags -->
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Spark - Pratham Vig">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://spark16x.vercel.app">
+    <meta property="og:image" content="/page.png">
+    <meta property="og:description" content="Hi, I’m Spark (Pratham Vig), and this is my creative portfolio.">
+    <meta property="og:site_name" content="Spark - Home">
+    <!-- End Open Graph Tags -->
 
-  <script src="https://kit.fontawesome.com/4027324f80.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <script src="https://unpkg.com/typify.js@1.1.9/dist/typify.min.js"></script>
+    <script src="https://kit.fontawesome.com/4027324f80.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=Geist:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap"
-    rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#e1e3e4",
+                        "primary-container": "#1b1b1b",
+                        "surface-container-low": "#f3f4f5",
+                        "primary-fixed-dim": "#c6c6c6",
+                        "secondary": "#585f6c",
+                        "tertiary-fixed-dim": "#c0c6db",
+                        "on-tertiary-fixed": "#141b2b",
+                        "outline": "#7e7576",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#141b2b",
+                        "on-tertiary-fixed-variant": "#404758",
+                        "surface-variant": "#e1e3e4",
+                        "surface-container": "#edeeef",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed": "#e2e2e2",
+                        "tertiary-fixed": "#dce2f7",
+                        "surface-bright": "#f8f9fa",
+                        "on-primary-fixed-variant": "#474747",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#5e5e5e",
+                        "secondary-fixed": "#dce2f3",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#f8f9fa",
+                        "on-secondary-container": "#5e6572",
+                        "on-primary-container": "#848484",
+                        "on-surface-variant": "#4c4546",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed": "#151c27",
+                        "surface-container-high": "#e7e8e9",
+                        "on-primary-fixed": "#1b1b1b",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed-dim": "#c0c7d6",
+                        "primary": "#000000",
+                        "secondary-container": "#dce2f3",
+                        "inverse-primary": "#c6c6c6",
+                        "surface-dim": "#d9dadb",
+                        "on-tertiary-container": "#7d8497",
+                        "outline-variant": "#cfc4c5",
+                        "inverse-on-surface": "#f0f1f2",
+                        "error-container": "#ffdad6",
+                        "on-surface": "#191c1d",
+                        "on-background": "#191c1d",
+                        "background": "#f8f9fa",
+                        "inverse-surface": "#2e3132",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed-variant": "#404754",
+                        "tertiary": "#000000"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "1.5rem",
+                        "container-max": "1200px",
+                        "xs": "0.5rem",
+                        "sm": "1rem",
+                        "gutter": "24px",
+                        "xl": "4rem",
+                        "margin-mobile": "16px",
+                        "lg": "2rem",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Geist"],
+                        "code": ["Geist"],
+                        "label-sm": ["Geist"],
+                        "headline-lg": ["Geist"],
+                        "body-md": ["Inter"],
+                        "display-xl": ["Geist"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Geist"],
+                        "display-xl-mobile": ["Geist"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["32px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "code": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "headline-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "display-xl": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display-xl-mobile": ["48px", {"lineHeight": "52px", "letterSpacing": "-0.03em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        /* Intersection Observer Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1), transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform, opacity;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Staggered Children */
+        .reveal-stagger > * {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal-stagger.active > * {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal, .reveal-stagger > *, .animate-float, .magnetic-btn {
+                transition: none !important;
+                animation: none !important;
+                transform: none !important;
+                opacity: 1 !important;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(20px, -30px) scale(1.1); }
+        }
+        .animate-float {
+            animation: float 12s ease-in-out infinite;
+        }
+
+        .magnetic-btn {
+            transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        #back-to-top {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(100px);
+            opacity: 0;
+        }
+        #back-to-top.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f8f9fa;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e1e3e4;
+            border-radius: 4px;
+        }
+
+        /* Typewriter cursor effect */
+        .cursor-blink::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+            color: var(--color-primary);
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+    </style>
+
+    <!-- GSAP & Ripple -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ripples/0.5.3/jquery.ripples.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
 </head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden selection:bg-primary selection:text-on-primary">
+    <!-- Atmospheric Blurs -->
+    <div class="fixed top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-secondary-container/30 blur-[120px] -z-10 animate-float"></div>
+    <div class="fixed bottom-[10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-tertiary-fixed/30 blur-[100px] -z-10 animate-float" style="animation-delay: -6s;"></div>
 
-<body class="w-full relative">
-  <div id="cursor" class="w-5 h-5 fixed top-0 left-0 bg-blue-500 z-100 rounded-full mix-blend-difference hidden"></div>
-
-  <div id="loading" class="w-screen h-dvh z-1000 fixed top-0 left-0 bg-[#050505] flex justify-center items-center">
-    <svg class="loading-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 9.449999809265137 91.0999984741211 46" width="200"
-      data-asc="0.789">
-      <defs />
-      <g>
-        <g transform="translate(0, 0)">
-          <path
-            d="M16.05 16.50L16.30 15.20Q16.10 12.50 12.65 12.50Q10.65 12.50 9.18 13.93Q7.70 15.35 7.70 16.93Q7.70 18.50 9.03 19.68Q10.35 20.85 12.23 21.78Q14.10 22.70 15.97 23.78Q17.85 24.85 19.18 26.55Q20.50 28.25 20.50 30.40Q20.50 34.85 17 37.40Q13.50 39.95 9.45 39.95Q5.40 39.95 2.70 38.48Q0 37 0 34Q0 32.40 1.10 31.10Q2.20 29.80 4.25 29.80Q5.05 29.80 5.70 30.25Q6.35 30.70 6.50 31.45Q6.50 32.20 5.60 32.20Q3.90 32.20 3.90 33.65Q3.95 35.30 5.47 36.65Q7 38 9.78 38Q12.55 38 14.53 36.10Q16.50 34.20 16.50 31.50Q16.50 29.70 15.15 28.25Q13.80 26.80 11.90 25.78Q10.00 24.75 8.08 23.70Q6.15 22.65 4.80 21.15Q3.45 19.65 3.45 17.75Q3.45 14.40 6.33 12.40Q9.20 10.40 12.85 10.40Q15.30 10.40 17.30 11.40Q19.30 12.40 19.35 14.45Q19.35 15.65 18.75 16.45Q18.15 17.25 17.13 17.25Q16.10 17.25 16.05 16.50ZM24.90 23.90Q25.45 23.25 26.65 22.23Q27.85 21.20 28.55 21.20Q29.25 21.20 29.25 23.18Q29.25 25.15 28.20 27.05Q28 27.95 27.90 29.65Q29.35 25.70 30.80 23.70Q32.25 21.70 34.33 21.70Q36.40 21.70 37.95 23.58Q39.50 25.45 39.50 29.48Q39.50 33.50 37.23 36.60Q34.95 39.70 31.25 39.70Q29.35 39.70 27.40 38.30Q27.40 47.85 26.30 52.85Q26.20 53.30 24.98 54.38Q23.75 55.45 23.18 55.45Q22.60 55.45 22.35 54.65Q22.10 53.85 22.10 53.15Q22.10 48 24.20 39.90Q24.55 35.20 24.68 29.60Q24.80 24 24.90 23.90M31.55 37.90Q33 37.90 34.55 35.88Q36.10 33.85 36.10 30.88Q36.10 27.90 35.28 26.13Q34.45 24.35 33.05 24.35Q30.65 24.35 27.60 34.30Q27.50 35.70 27.50 36.50Q28.90 37.90 31.55 37.90ZM55.40 39.70Q53.45 39.70 52.45 38.90Q52.10 38.55 52.10 37.13Q52.10 35.70 52.20 33.30Q50.90 36.55 49.63 38.13Q48.35 39.70 46.35 39.70Q44.35 39.70 42.85 37.83Q41.35 35.95 41.35 31.93Q41.35 27.90 43.63 24.80Q45.90 21.70 49.60 21.70Q51.20 21.70 53.20 23.80Q53.60 23.25 54.63 22.48Q55.65 21.70 56.38 21.70Q57.10 21.70 57.10 23.60Q57.10 24.10 56.83 25.55Q56.55 27 56.20 27.65Q55.75 28.80 55.75 35.80Q55.75 37.15 56.05 37.15Q56.90 37.10 58.40 35.03Q59.90 32.95 61.38 29.70Q62.85 26.45 63.18 26.45Q63.50 26.45 63.50 26.85Q63.50 28.25 62.05 31.30Q58.10 39.70 55.40 39.70M49.30 23.70Q47.90 23.70 46.33 25.78Q44.75 27.85 44.75 30.65Q44.75 33.45 45.58 35.25Q46.40 37.05 47.75 37.05Q49.40 37.05 52.60 28.80Q52.65 28.40 52.73 27.43Q52.80 26.45 52.85 25.95Q52.40 25.15 51.28 24.43Q50.15 23.70 49.30 23.70ZM64.85 26.40L67.60 26.10Q68 26.10 68.30 26.55Q68.60 27 68.60 27.50Q68.60 28 68.28 30.90Q67.95 33.80 67.95 35.48Q67.95 37.15 68.25 37.15Q69.10 37.10 70.60 35.03Q72.10 32.95 73.58 29.70Q75.05 26.45 75.38 26.45Q75.70 26.45 75.70 26.85Q75.70 28.25 74.25 31.30Q70.30 39.70 67.60 39.70Q65.65 39.70 64.65 38.90Q64.30 38.55 64.30 34.55Q64.30 30.55 65.15 27.70Q62.25 27.70 61.10 25.85Q60.50 24.90 60.50 23.70Q60.50 22.50 61 21.60Q61.50 20.70 62.42 20.70Q63.35 20.70 64.13 21.68Q64.90 22.65 64.90 23.85Q64.90 25.05 64.20 26.25Q64.40 26.40 64.85 26.40ZM89.35 41.20L90.70 41.05Q91.10 41.05 91.10 41.45Q91.10 42.15 90.15 42.50Q89.20 42.85 88 42.85Q85.75 42.85 84.22 41.05Q82.70 39.25 80 34.40Q79.35 33.35 79.35 32.80Q79.35 32.05 81.45 31.05Q84.85 29.30 84.85 26.65Q84.85 25.90 84.33 25.38Q83.80 24.85 82.95 24.85Q81.75 24.85 80.10 27.68Q78.45 30.50 77.88 32.98Q77.30 35.45 77.30 38.30Q77.30 39.70 76.50 39.70Q75.35 39.70 74.30 39.38Q73.25 39.05 73.25 38.53Q73.25 38 73.65 33.78Q74.05 29.55 74.10 27.70Q74.30 17.50 75.30 12.10Q75.45 11.65 76.67 10.55Q77.90 9.45 78.65 9.45Q79.40 9.45 79.38 11.33Q79.35 13.20 78.55 19.35Q77.75 25.50 77.55 30.60Q78.45 27.40 80.42 24.55Q82.40 21.70 84.40 21.70Q87.80 21.70 87.80 25Q87.80 27.20 86.50 28.98Q85.20 30.75 83 31.85Q82.55 32.05 82.55 32.30Q82.55 32.55 82.70 32.80Q85.85 38.35 88.05 40.60Q88.65 41.20 89.35 41.20Z" />
-        </g>
-      </g>
-    </svg>
-  </div>
- 
-  
-  
-
-  <header class="w-full h-[60px] flex justify-between items-center fixed top-0 left-0 bg-[#050505]/90 backdrop-blur-md z-50 border-b border-white/10">
-    <a href="#" class="p-[10px] text-blue-500 text-2xl font-[Cookie] sm:text-[35px]">Spark</a>
-    <nav id="menu"
-      class="sm:w-1/2 sm:h-full sm:flex-row sm:bg-transparent flex sm:justify-around sm:relative w-full h-dvh top-[0px] left-full sm:left-0 flex-col fixed bg-zinc-900/95 justify-center gap-[20px] items-center text-2xl sm:text-lg sm:flex z-10">
-      <a href="#home" class="sm:hover:text-blue-500 sm:hover:underline duration-150 font-[Roboto_Condensed] hT">Home</a>
-      <a href="#about" class="sm:hover:text-blue-600 sm:hover:underline duration-150 font-[Roboto_Condensed] hT">About</a>
-      <a href="#skills" class="sm:hover:text-blue-600 sm:hover:underline duration-150 font-[Roboto_Condensed] hT">Skills</a>
-      <a href="#contact" class="sm:hover:text-blue-600 sm:hover:underline duration-150 font-[Roboto_Condensed] hT">Contact</a>
-    </nav>
-    <button id="menu-b" class="fixed top-[14px] right-[20px] z-20 sm:hidden" type="button" aria-label="Toggle menu">
-      <svg class="menu" width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path id="Vector" d="M5 15H19M5 9H19" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-      </svg>
+    <!-- Back to Top Button -->
+    <button aria-label="Back to top" class="fixed bottom-lg right-lg z-[60] bg-primary text-on-primary w-12 h-12 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-90" id="back-to-top">
+        <span class="material-symbols-outlined">arrow_upward</span>
     </button>
-  </header>
 
-  <main class="pt-[80px] pb-[40px]">
-    <section id="home" class="flex flex-col items-center justify-center sm:flex-row w-full min-h-[100vh] bg-cover bg-center relative" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop');">
-      <div class="absolute inset-0 bg-black/60 z-0"></div>
-      <div class="z-10 flex flex-col items-center sm:flex-row w-full max-w-7xl">
-      <div
-        class="w-[220px] h-[220px] sm:w-1/3 sm:h-auto overflow-hidden rounded-[100%] m-[20px] sm:mx-[120px] shadow-[0px_0px_20px] shadow-blue-500 duration-350 hover:scale-110 hover:shadow-[0px_0px_30px] hT">
-        <img src="./char.jpeg" alt="Portrait of Pratham (Spark)" class="w-full h-full object-cover" />
-      </div>
-      <div class="flex flex-col justify-center items-center sm:m-[50px] sm:items-start">
-        <p class="text-[40px] font-[Cookie] sm:text-[50px]">Hi, It's <span class="text-blue-500">Spark</span></p>
-        <p class="text-[16px] sm:text-[22px]">I'm a <span class="text-blue-500 typing font-[Roboto_Condensed] z-10"></span></p>
-        <p class="text-[16px] text-left w-[90%] sm:w-[80%] font-[Roboto_Condensed] sm:text-[20px] mt-2">
-          A student and web developer building modern, experimental, and AI-powered experiences.
-        </p>
-        <div class="flex gap-[10px] my-[14px]">
-          <a class="text-xl border text-blue-500 rounded-full p-2 hover:bg-blue-500 hover:text-black hover:shadow-[0px_0px_20px] shadow-blue-500 hover:scale-150 duration-350 hT"
-            href="https://instagram.com/spark16.x" aria-label="Instagram"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-          <a class="text-xl border text-blue-500 rounded-full p-2 hover:bg-blue-500 hover:text-black hover:shadow-[0px_0px_20px] shadow-blue-500 hover:scale-150 duration-350 hT"
-            href="https://github.com/spark16x" aria-label="GitHub"><i class="fa fa-github" aria-hidden="true"></i></a>
+    <!-- TopNavBar -->
+    <nav class="sticky top-0 w-full z-50 flex justify-between items-center px-gutter py-sm max-w-container-max mx-auto glass border-b border-outline-variant/30">
+        <div class="font-headline-md text-headline-md font-bold tracking-tighter text-on-surface">Spark.</div>
+        <div class="hidden md:flex items-center gap-lg">
+            <a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md transition-all nav-link" href="#home">Home</a>
+            <a class="text-secondary hover:text-primary transition-colors font-body-md text-body-md nav-link" href="#about">About</a>
+            <a class="text-secondary hover:text-primary transition-colors font-body-md text-body-md nav-link" href="#skills">Skills</a>
+            <a class="text-secondary hover:text-primary transition-colors font-body-md text-body-md nav-link" href="#contact">Contact</a>
         </div>
-        <a class="text-lg border rounded-full border-blue-500 hover:text-blue-500 hover:bg-black p-[10px] hover:scale-110 duration-350 bg-blue-500 text-black hover:shadow-[0px_0px_20px] shadow-blue-500 font-[Roboto_Condensed] hT"
-          href="https://www.fiverr.com/s/Q7Lj2de">Let's work together</a>
-      </div>
-      </div>
-    </section>
+        <a class="bg-primary text-on-primary px-lg py-xs rounded-full font-label-sm text-label-sm hover:opacity-80 transition-opacity active:scale-95 duration-200 magnetic-btn" href="https://www.fiverr.com/s/Q7Lj2de">Hire Me</a>
+    </nav>
 
-    <section id="about" class="w-full min-h-[70vh] flex flex-col justify-center items-center sm:flex-row px-[20px] sm:px-[50px] bg-[#050505] relative z-10">
-      <div
-        class="w-[180px] h-[180px] sm:w-1/3 sm:h-auto min-h-[70px] min-w-[70px] overflow-hidden rounded-[100%] m-[20px] sm:mx-[120px] shadow-[0px_0px_20px] shadow-blue-500 duration-350 hover:scale-110 hover:shadow-[0px_0px_30px] hT">
-        <img src="./char.jpeg" alt="Portrait of Pratham (Spark)" class="w-full h-full object-cover" />
-      </div>
-      <div class="w-full flex flex-col items-center sm:justify-center">
-        <h1 class="text-4xl font-[Roboto_Condensed]">About <span class="text-blue-500">me</span></h1>
-        <h2 class="font-[Roboto_Condensed] mt-1">Full-stack developer</h2>
-        <p class="w-[90%] sm:w-[80%] font-[Roboto_Condensed] text-center sm:text-left mt-4">
-          Hey, I’m Pratham 👋 — a Class 12 (Commerce) student and a passionate developer. I love creating futuristic web
-          experiences and currently I’m building my own JARVIS-inspired AI assistant. I enjoy experimenting, learning
-          quickly, and shipping ideas that feel both useful and creative.
-        </p>
-      </div>
-    </section>
+    <main class="max-w-container-max mx-auto px-gutter">
+        <!-- Hero Section -->
+        <section class="min-h-[819px] flex flex-col md:flex-row items-center justify-between py-xl gap-xl" id="home">
+            <div class="flex-1 space-y-md reveal">
+                <p class="font-headline-md text-headline-md">Hi, It's <span class="font-bold">Spark</span></p>
+                <h1 class="font-display-xl-mobile md:font-display-xl text-display-xl-mobile md:text-display-xl max-w-2xl leading-tight">I'm a <br/><span class="bg-primary text-on-primary px-2 inline-block typing cursor-blink" id="typewriter">Creative Web Developer</span></h1>
+                <p class="font-body-lg text-body-lg text-secondary max-w-xl">A student and web developer building modern, experimental, and AI-powered experiences. I enjoy experimenting, learning quickly, and shipping ideas that feel both useful and creative.</p>
+                <div class="flex flex-wrap gap-sm pt-sm items-center">
+                    <a class="bg-primary text-on-primary px-xl py-md rounded-full font-label-sm text-label-sm hover:shadow-lg transition-all active:scale-95 magnetic-btn inline-block text-center" href="https://www.fiverr.com/s/Q7Lj2de">Let's work together</a>
+                    <a class="bg-surface border border-outline-variant text-primary w-12 h-12 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-all active:scale-95 magnetic-btn" href="https://github.com/spark16x" aria-label="GitHub"><i class="fa fa-github" aria-hidden="true"></i></a>
+                    <a class="bg-surface border border-outline-variant text-primary w-12 h-12 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-all active:scale-95 magnetic-btn" href="https://instagram.com/spark16.x" aria-label="Instagram"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                </div>
+            </div>
+            <div class="flex-1 flex justify-center md:justify-end reveal">
+                <div class="relative w-72 h-72 md:w-96 md:h-96 group">
+                    <div class="absolute inset-0 bg-primary-container rounded-3xl rotate-6 group-hover:rotate-0 transition-transform duration-500"></div>
+                    <img class="relative w-full h-full object-cover rounded-3xl grayscale hover:grayscale-0 transition-all duration-500 shadow-2xl" alt="Portrait of Pratham (Spark)" src="./char.jpeg"/>
+                </div>
+            </div>
+        </section>
 
-    <section id="skills" class="w-full min-h-[70vh] py-[50px] px-[20px] sm:px-[50px] bg-[#050505] relative z-10">
-      <h2 class="text-4xl font-[Roboto_Condensed] text-center mb-10">Creative <span class="text-blue-500">Skills</span></h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-        <article class="p-6 rounded-2xl border border-blue-500/40 bg-zinc-900/70 shadow-[0_0_25px_rgba(0,149,255,0.2)] hT">
-          <h3 class="text-2xl font-[Roboto_Condensed] mb-4 text-blue-400">Frontend</h3>
-          <div class="space-y-4 font-[Roboto_Condensed]">
-            <p>React</p>
-            <div class="w-full h-2 rounded-full bg-zinc-700"><div class="skill-bar w-[92%] h-2 rounded-full bg-blue-500"></div></div>
-            <p>Next.js</p>
-            <div class="w-full h-2 rounded-full bg-zinc-700"><div class="skill-bar w-[88%] h-2 rounded-full bg-blue-500"></div></div>
-            <p>Tailwind CSS</p>
-            <div class="w-full h-2 rounded-full bg-zinc-700"><div class="skill-bar w-[90%] h-2 rounded-full bg-blue-500"></div></div>
-            <p>Shadcn ui</p>
-            <div class="w-full h-2 rounded-full bg-zinc-700"><div class="skill-bar w-[60%] h-2 rounded-full bg-blue-500"></div></div>
-          </div>
-        </article>
+        <!-- About Section -->
+        <section class="py-xl reveal" id="about">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-xl items-center">
+                <div class="space-y-sm">
+                    <h2 class="font-headline-lg text-headline-lg">About <span class="text-secondary">me</span></h2>
+                    <h3 class="font-headline-md text-headline-md text-secondary">Full-stack developer</h3>
+                    <p class="font-body-md text-body-md text-secondary mt-4">
+                        Hey, I’m Pratham 👋 — a Class 12 (Commerce) student and a passionate developer. I love creating futuristic web experiences and currently I’m building my own JARVIS-inspired AI assistant.
+                        <br/><br/>
+                        I enjoy experimenting, learning quickly, and shipping ideas that feel both useful and creative. I believe that great software is not just about the code, but about solving real-world problems through thoughtful design and engineering excellence.
+                    </p>
+                </div>
+                <div class="grid grid-cols-2 gap-md reveal-stagger">
+                    <div class="bg-white p-lg rounded-xl border border-outline-variant/30 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="text-display-xl-mobile font-display-xl-mobile text-primary">12th</div>
+                        <div class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">Class</div>
+                    </div>
+                    <div class="bg-white p-lg rounded-xl border border-outline-variant/30 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="text-display-xl-mobile font-display-xl-mobile text-primary">AI</div>
+                        <div class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">JARVIS Builder</div>
+                    </div>
+                    <div class="bg-white p-lg rounded-xl border border-outline-variant/30 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="text-display-xl-mobile font-display-xl-mobile text-primary">Web</div>
+                        <div class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">Experiences</div>
+                    </div>
+                    <div class="bg-primary p-lg rounded-xl shadow-xl flex flex-col justify-center">
+                        <span class="material-symbols-outlined text-on-primary text-4xl mb-sm">rocket_launch</span>
+                        <div class="text-on-primary font-headline-md text-headline-md">Shipping Ideas</div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <article class="p-6 rounded-2xl border border-blue-500/40 bg-zinc-900/70 shadow-[0_0_25px_rgba(0,149,255,0.2)] hT">
-          <h3 class="text-2xl font-[Roboto_Condensed] mb-4 text-blue-400">Backend</h3>
-          <div class="space-y-4 font-[Roboto_Condensed]">
-            <p>Node.js</p>
-            <div class="w-full h-2 rounded-full bg-zinc-700"><div class="skill-bar w-[85%] h-2 rounded-full bg-blue-500"></div></div>
-            <p>Bun</p>
-            <div class="w-full h-2 rounded-full bg-zinc-700"><div class="skill-bar w-[25%] h-2 rounded-full bg-blue-500"></div></div>
-            <p>Express</p>
-            <div class="w-full h-2 rounded-full bg-zinc-700"><div class="skill-bar w-[82%] h-2 rounded-full bg-blue-500"></div></div>
-            <p>MongoDB</p>
-            <div class="w-full h-2 rounded-full bg-zinc-700"><div class="skill-bar w-[78%] h-2 rounded-full bg-blue-500"></div></div>
-          </div>
-        </article>
+        <!-- Skills Section -->
+        <section class="py-xl reveal" id="skills">
+            <div class="text-center mb-xl">
+                <h2 class="font-headline-lg text-headline-lg">Creative Skills</h2>
+                <p class="text-secondary font-body-md">The tools and technologies I use to bring ideas to life.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-md reveal-stagger">
+                <!-- Frontend -->
+                <div class="bg-white p-lg rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors shadow-sm">
+                    <span class="material-symbols-outlined text-primary mb-sm text-3xl">smart_ventilation</span>
+                    <h3 class="font-headline-md text-headline-md mb-md">Frontend</h3>
+                    <div class="space-y-4 font-body-sm text-secondary">
+                        <div>
+                            <div class="flex justify-between mb-1"><span>React</span> <span>92%</span></div>
+                            <div class="w-full h-2 rounded-full bg-surface-container-high"><div class="h-2 rounded-full bg-primary" style="width: 92%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1"><span>Next.js</span> <span>88%</span></div>
+                            <div class="w-full h-2 rounded-full bg-surface-container-high"><div class="h-2 rounded-full bg-primary" style="width: 88%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1"><span>Tailwind CSS</span> <span>90%</span></div>
+                            <div class="w-full h-2 rounded-full bg-surface-container-high"><div class="h-2 rounded-full bg-primary" style="width: 90%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1"><span>Shadcn ui</span> <span>60%</span></div>
+                            <div class="w-full h-2 rounded-full bg-surface-container-high"><div class="h-2 rounded-full bg-primary" style="width: 60%"></div></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Backend -->
+                <div class="bg-white p-lg rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors shadow-sm">
+                    <span class="material-symbols-outlined text-primary mb-sm text-3xl">dns</span>
+                    <h3 class="font-headline-md text-headline-md mb-md">Backend</h3>
+                    <div class="space-y-4 font-body-sm text-secondary">
+                        <div>
+                            <div class="flex justify-between mb-1"><span>Node.js</span> <span>85%</span></div>
+                            <div class="w-full h-2 rounded-full bg-surface-container-high"><div class="h-2 rounded-full bg-primary" style="width: 85%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1"><span>Express</span> <span>82%</span></div>
+                            <div class="w-full h-2 rounded-full bg-surface-container-high"><div class="h-2 rounded-full bg-primary" style="width: 82%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1"><span>MongoDB</span> <span>78%</span></div>
+                            <div class="w-full h-2 rounded-full bg-surface-container-high"><div class="h-2 rounded-full bg-primary" style="width: 78%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1"><span>Bun</span> <span>25%</span></div>
+                            <div class="w-full h-2 rounded-full bg-surface-container-high"><div class="h-2 rounded-full bg-primary" style="width: 25%"></div></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tools -->
+                <div class="bg-white p-lg rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors shadow-sm">
+                    <span class="material-symbols-outlined text-primary mb-sm text-3xl">terminal</span>
+                    <h3 class="font-headline-md text-headline-md mb-md">Tools & Creative Stack</h3>
+                    <div class="flex flex-wrap gap-xs">
+                        <span class="bg-surface-container text-secondary px-sm py-1 rounded-full text-label-sm font-label-sm">Git/GitHub</span>
+                        <span class="bg-surface-container text-secondary px-sm py-1 rounded-full text-label-sm font-label-sm">Firebase</span>
+                        <span class="bg-surface-container text-secondary px-sm py-1 rounded-full text-label-sm font-label-sm">AI APIs</span>
+                        <span class="bg-surface-container text-secondary px-sm py-1 rounded-full text-label-sm font-label-sm">GSAP</span>
+                        <span class="bg-surface-container text-secondary px-sm py-1 rounded-full text-label-sm font-label-sm">Vercel</span>
+                        <span class="bg-surface-container text-secondary px-sm py-1 rounded-full text-label-sm font-label-sm">Performance Tuning</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <article class="p-6 rounded-2xl border border-blue-500/40 bg-zinc-900/70 shadow-[0_0_25px_rgba(0,149,255,0.2)] hT">
-          <h3 class="text-2xl font-[Roboto_Condensed] mb-4 text-blue-400">Tools & Creative Stack</h3>
-          <div class="flex flex-wrap gap-2 font-[Roboto_Condensed]">
-            <span class="px-3 py-1 rounded-full bg-blue-500/20 border border-blue-500/40">Git/GitHub</span>
-            <span class="px-3 py-1 rounded-full bg-blue-500/20 border border-blue-500/40">Firebase</span>
-            <span class="px-3 py-1 rounded-full bg-blue-500/20 border border-blue-500/40">AI APIs</span>
-            <span class="px-3 py-1 rounded-full bg-blue-500/20 border border-blue-500/40">GSAP</span>
-            <span class="px-3 py-1 rounded-full bg-blue-500/20 border border-blue-500/40">Vercel</span>
-            <span class="px-3 py-1 rounded-full bg-blue-500/20 border border-blue-500/40">Performance Tuning</span>
-          </div>
-        </article>
-      </div>
-    </section>
+        <!-- Contact Section -->
+        <section class="py-xl reveal" id="contact">
+            <div class="max-w-3xl mx-auto bg-white p-xl rounded-3xl border border-outline-variant/30 shadow-xl text-center">
+                <h2 class="font-display-xl-mobile md:font-headline-lg text-display-xl-mobile md:text-headline-lg mb-md">Let's build something <span class="text-secondary">amazing</span></h2>
+                <p class="text-secondary font-body-lg mb-xl">Have an idea or project? I’d love to collaborate and turn it into a powerful digital experience.</p>
+                <div class="flex flex-wrap justify-center gap-md">
+                    <a href="mailto:spark2009971@gmail.com" class="px-xl py-md rounded-full border border-outline-variant text-primary hover:bg-surface-container-low transition-all magnetic-btn font-label-sm">Email Me</a>
+                    <a href="https://github.com/spark16x" class="px-xl py-md rounded-full border border-outline-variant text-primary hover:bg-surface-container-low transition-all magnetic-btn font-label-sm">GitHub</a>
+                    <a href="https://instagram.com/spark16.x" class="px-xl py-md rounded-full border border-outline-variant text-primary hover:bg-surface-container-low transition-all magnetic-btn font-label-sm">Instagram</a>
+                    <a href="https://www.fiverr.com/s/Q7Lj2de" class="px-xl py-md rounded-full bg-primary text-on-primary hover:shadow-lg active:scale-95 transition-all magnetic-btn font-label-sm">Hire Me</a>
+                </div>
+            </div>
+        </section>
+    </main>
 
-    <section id="contact" class="w-full min-h-[60vh] py-[50px] px-[20px] sm:px-[50px] flex items-center justify-center bg-[#050505] relative z-10">
-      <div class="max-w-3xl w-full p-8 rounded-3xl bg-gradient-to-br from-zinc-900 to-zinc-800 border border-blue-500/40 shadow-[0_0_35px_rgba(0,149,255,0.25)] text-center">
-        <h2 class="text-4xl font-[Roboto_Condensed] mb-3">Let's build something <span class="text-blue-500">amazing</span></h2>
-        <p class="font-[Roboto_Condensed] text-zinc-200 mb-8">Have an idea or project? I’d love to collaborate and turn it into a powerful digital experience.</p>
-        <div class="flex flex-wrap justify-center gap-3 font-[Roboto_Condensed]">
-          <a href="mailto:spark2009971@gmail.com" class="hT px-5 py-2 rounded-full border border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-black duration-300">Email Me</a>
-          <a href="https://github.com/spark16x" class="hT px-5 py-2 rounded-full border border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-black duration-300">GitHub</a>
-          <a href="https://instagram.com/spark16.x" class="hT px-5 py-2 rounded-full border border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-black duration-300">Instagram</a>
-          <a href="https://www.fiverr.com/s/Q7Lj2de" class="hT px-5 py-2 rounded-full bg-blue-500 text-black hover:scale-105 duration-300">Hire Me</a>
+    <!-- Footer -->
+    <footer class="flex flex-col items-center gap-md py-xl w-full max-w-container-max mx-auto px-gutter border-t border-outline-variant/20 mt-xl bg-surface">
+        <div class="font-headline-md text-headline-md font-bold text-on-surface">Spark.</div>
+        <div class="flex gap-lg">
+            <a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-all hover:underline nav-link" href="https://github.com/spark16x">GitHub</a>
+            <a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-all hover:underline nav-link" href="https://instagram.com/spark16.x">Instagram</a>
+            <a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-all hover:underline nav-link" href="mailto:spark2009971@gmail.com">Email</a>
         </div>
-      </div>
-    </section>
-  </main>
+        <div class="font-label-sm text-label-sm text-secondary opacity-70">© 2024 Spark (Pratham Vig). Crafted with precision.</div>
+    </footer>
 
-  
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/MorphSVGPlugin.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrambleTextPlugin.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/TextPlugin.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/MotionPathPlugin.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Intersection Observer for Fade-up Animations ---
+            const revealCallback = (entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            };
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ripples/0.5.3/jquery.ripples.min.js"></script>
+            const revealObserver = new IntersectionObserver(revealCallback, {
+                root: null,
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
 
-  <script src="main.js"></script>
+            document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => {
+                revealObserver.observe(el);
+            });
+
+            // Staggered children timing
+            document.querySelectorAll('.reveal-stagger').forEach(parent => {
+                Array.from(parent.children).forEach((child, index) => {
+                    child.style.transitionDelay = `${index * 0.1}s`;
+                });
+            });
+
+            // --- Magnetic Hover Effect ---
+            document.querySelectorAll('.magnetic-btn').forEach(btn => {
+                btn.addEventListener('mousemove', (e) => {
+                    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+
+                    btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+                });
+
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = `translate(0px, 0px)`;
+                });
+            });
+
+            // --- Back to Top ---
+            const btt = document.getElementById('back-to-top');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 500) {
+                    btt.classList.add('visible');
+                } else {
+                    btt.classList.remove('visible');
+                }
+            });
+            btt.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // --- Smooth Scroll Navigation ---
+            document.querySelectorAll('.nav-link').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href.startsWith('#')) {
+                        e.preventDefault();
+                        const target = document.querySelector(href);
+                        if (target) {
+                            target.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }
+                });
+            });
+
+            // --- Typewriter Effect ---
+            const phrases = [
+                'Creative Web Developer',
+                'Frontend Builder',
+                'Backend Explorer',
+                'App Builder'
+            ];
+            let currentPhraseIndex = 0;
+            let currentCharacterIndex = 0;
+            let isDeleting = false;
+            let typewriterDelay = 100;
+            const typewriterElement = document.getElementById('typewriter');
+
+            function typeWriter() {
+                const currentPhrase = phrases[currentPhraseIndex];
+
+                if (isDeleting) {
+                    typewriterElement.textContent = currentPhrase.substring(0, currentCharacterIndex - 1);
+                    currentCharacterIndex--;
+                    typewriterDelay = 50;
+                } else {
+                    typewriterElement.textContent = currentPhrase.substring(0, currentCharacterIndex + 1);
+                    currentCharacterIndex++;
+                    typewriterDelay = 100;
+                }
+
+                if (!isDeleting && currentCharacterIndex === currentPhrase.length) {
+                    isDeleting = true;
+                    typewriterDelay = 2000; // Pause at end
+                } else if (isDeleting && currentCharacterIndex === 0) {
+                    isDeleting = false;
+                    currentPhraseIndex = (currentPhraseIndex + 1) % phrases.length;
+                    typewriterDelay = 500; // Pause before new phrase
+                }
+
+                setTimeout(typeWriter, typewriterDelay);
+            }
+
+
+            // --- Ripple Effect (Hero section) ---
+            try {
+                $('#home').ripples({
+                    resolution: 512,
+                    dropRadius: 30,
+                    perturbance: 0.08
+                });
+
+                let lastRippleTime = 0;
+                $('#home').on('mousemove', function(e) {
+                    const now = Date.now();
+                    if (now - lastRippleTime < 80) return;
+                    lastRippleTime = now;
+
+                    const offsetX = e.pageX - $(this).offset().left;
+                    const offsetY = e.pageY - $(this).offset().top;
+
+                    $('#home').ripples('drop', offsetX, offsetY, 10, 0.04);
+                });
+            } catch (e) {
+                console.warn('Ripples not supported:', e);
+            }
+
+            // --- GSAP Scroll Animations ---
+            if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                gsap.registerPlugin(ScrollTrigger);
+
+                // Add skill bar animation using GSAP like original
+                gsap.utils.toArray('.bg-surface-container-high').forEach(bar => {
+                    const innerBar = bar.querySelector('div');
+                    if(innerBar) {
+                        const width = innerBar.style.width;
+                        innerBar.style.width = '0%';
+                        gsap.to(innerBar, {
+                            width: width,
+                            duration: 1.5,
+                            ease: "power2.out",
+                            scrollTrigger: {
+                                trigger: bar,
+                                start: "top 90%",
+                            }
+                        });
+                    }
+                });
+            }
+
+            // Start typewriter
+            if(typewriterElement) setTimeout(typeWriter, 1000);
+        });
+    </script>
 </body>
-
 </html>
