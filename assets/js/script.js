@@ -161,67 +161,142 @@ document.addEventListener('DOMContentLoaded', () => {
     // Start typewriter
     if (typewriterElement) setTimeout(typeWriter, 1000);
 
-    // --- 3D Parallax Profile Card ---
+    // --- Desktop Mouse Parallax Engine ---
+    const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const profileCard = document.getElementById('profile-card');
-    if (profileCard) {
-        // Desktop mouse movement
-        profileCard.parentElement.addEventListener('mousemove', (e) => {
-            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const parallaxElements = document.querySelectorAll('[data-parallax-speed]');
+    const tiltCards = document.querySelectorAll('#skills .bg-white, #clients .group, #about .bg-white');
 
-            const rect = profileCard.parentElement.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+    if (!isReducedMotion) {
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetX = 0;
+        let targetY = 0;
+        let isHoveringProfileCard = false;
+        let cardTiltX = 0;
+        let cardTiltY = 0;
 
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
+        // Desktop window mouse movement listener
+        window.addEventListener('mousemove', (e) => {
+            // Normalized X and Y from -1 to 1 relative to window center
+            targetX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+            targetY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
 
-            const rotateX = ((y - centerY) / centerY) * -15; // Max 15 deg rotation
-            const rotateY = ((x - centerX) / centerX) * 15;
+            // Direct local tilt if hovering over profile card
+            if (profileCard) {
+                const rect = profileCard.getBoundingClientRect();
+                if (
+                    e.clientX >= rect.left &&
+                    e.clientX <= rect.right &&
+                    e.clientY >= rect.top &&
+                    e.clientY <= rect.bottom
+                ) {
+                    isHoveringProfileCard = true;
+                    const cardX = e.clientX - rect.left;
+                    const cardY = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+
+                    // Direct interactive 3D rotation up to 25 deg
+                    cardTiltX = ((cardY - centerY) / centerY) * -22;
+                    cardTiltY = ((cardX - centerX) / centerX) * 22;
+                } else {
+                    isHoveringProfileCard = false;
+                }
+            }
+        });
+
+        // Smooth Lerp Animation Loop using requestAnimationFrame
+        function animateParallax() {
+            // Linear interpolation for silky smooth springy movement
+            mouseX += (targetX - mouseX) * 0.08;
+            mouseY += (targetY - mouseY) * 0.08;
+
+            // 1. Parallax background elements & atmospheric blurs
+            parallaxElements.forEach(el => {
+                const speed = parseFloat(el.getAttribute('data-parallax-speed')) || 20;
+                const xOffset = (mouseX * speed).toFixed(2);
+                const yOffset = (mouseY * speed).toFixed(2);
+
+                const z = parseFloat(el.getAttribute('data-parallax-z')) || 0;
+                if (el.classList.contains('animate-float')) {
+                    // Set CSS variables for float animation keyframes
+                    el.style.setProperty('--px', `${xOffset}px`);
+                    el.style.setProperty('--py', `${yOffset}px`);
+                } else {
+                    el.style.transform = `translate3d(${xOffset}px, ${yOffset}px, ${z}px)`;
+                }
+            });
+
+            // 2. 3D Parallax Profile Card (Global mouse move + local hover)
+            if (profileCard) {
+                let finalRotateX, finalRotateY;
+                if (isHoveringProfileCard) {
+                    finalRotateX = cardTiltX.toFixed(2);
+                    finalRotateY = cardTiltY.toFixed(2);
+                } else {
+                    const maxRotateX = 18;
+                    const maxRotateY = 18;
+                    finalRotateX = (mouseY * -maxRotateX).toFixed(2);
+                    finalRotateY = (mouseX * maxRotateY).toFixed(2);
+                }
+
+                profileCard.style.transform = `rotateX(${finalRotateX}deg) rotateY(${finalRotateY}deg)`;
+            }
+
+            requestAnimationFrame(animateParallax);
+        }
+
+        requestAnimationFrame(animateParallax);
+
+        // 3. Interactive Card 3D Tilt on Hover (Skills, About & Client Cards)
+        tiltCards.forEach(card => {
+            card.style.transformStyle = 'preserve-3d';
+            card.style.transition = 'transform 0.15s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s ease';
+
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const cardX = e.clientX - rect.left;
+                const cardY = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const tiltX = (((cardY - centerY) / centerY) * -10).toFixed(2);
+                const tiltY = (((cardX - centerX) / centerX) * 10).toFixed(2);
+
+                card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateZ(12px)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+            });
+        });
+    }
+
+    // Mobile Device Orientation for Parallax
+    if (window.DeviceOrientationEvent && profileCard) {
+        let initialBeta = null;
+        let initialGamma = null;
+
+        window.addEventListener('deviceorientation', (e) => {
+            if (isReducedMotion || window.innerWidth >= 768) return;
+
+            let beta = e.beta;   // In degree [-180,180)
+            let gamma = e.gamma; // In degree [-90,90)
+
+            if (beta === null || gamma === null) return;
+
+            if (initialBeta === null) initialBeta = beta;
+            if (initialGamma === null) initialGamma = gamma;
+
+            let diffBeta = Math.max(-20, Math.min(20, beta - initialBeta));
+            let diffGamma = Math.max(-20, Math.min(20, gamma - initialGamma));
+
+            const rotateX = (diffBeta * -1).toFixed(2);
+            const rotateY = diffGamma.toFixed(2);
 
             profileCard.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
         });
-
-        profileCard.parentElement.addEventListener('mouseleave', () => {
-            profileCard.style.transform = `rotateX(0deg) rotateY(0deg)`;
-            profileCard.style.transition = 'transform 0.5s ease-out';
-            setTimeout(() => {
-                profileCard.style.transition = 'transform 0.1s ease-out';
-            }, 500);
-        });
-
-        // Mobile device orientation
-        if (window.DeviceOrientationEvent) {
-            let initialBeta = null;
-            let initialGamma = null;
-
-            window.addEventListener('deviceorientation', (e) => {
-                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-                // Allow user to interact first to request permission on iOS if needed later,
-                // but just listening for standard orientation here.
-
-                let beta = e.beta;   // In degree in the range [-180,180) - x axis
-                let gamma = e.gamma; // In degree in the range [-90,90) - y axis
-
-                if (beta === null || gamma === null) return;
-
-                if (initialBeta === null) initialBeta = beta;
-                if (initialGamma === null) initialGamma = gamma;
-
-                // Relative movement
-                let diffBeta = beta - initialBeta;
-                let diffGamma = gamma - initialGamma;
-
-                // Limit the rotation
-                diffBeta = Math.max(-20, Math.min(20, diffBeta));
-                diffGamma = Math.max(-20, Math.min(20, diffGamma));
-
-                const rotateX = diffBeta * -1; // Adjust multiplier as needed
-                const rotateY = diffGamma;
-
-                profileCard.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-            });
-        }
     }
 
 });

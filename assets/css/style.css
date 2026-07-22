@@ -48,14 +48,13 @@
 }
 
 @keyframes float {
-
     0%,
     100% {
-        transform: translate(0, 0) scale(1);
+        transform: translate(var(--px, 0px), var(--py, 0px)) scale(1);
     }
 
     50% {
-        transform: translate(20px, -30px) scale(1.1);
+        transform: translate(calc(var(--px, 0px) + 20px), calc(var(--py, 0px) - 30px)) scale(1.1);
     }
 }
 
@@ -112,6 +111,6 @@
     height: 100vh;
     pointer-events: none;
     z-index: 400;
-    background: url('../images/ezgif-71d10a957ec9772e.gif') center/cover no-repeat;
+    background: url('../images/ezgif-348a80c3f3a789ff.gif') center/cover no-repeat;
     mix-blend-mode: screen;
 }
