@@ -114,3 +114,16 @@
     background: url('../images/ezgif-3b39feaa49d63754.gif') center/cover no-repeat;
     mix-blend-mode: screen;
 }
+
+/* 3D Hardware Acceleration for Mobile Card Tilt & Parallax */
+#profile-card,
+#skills .bg-white,
+#clients .group,
+#about .bg-white,
+#contact > div {
+    transform-style: preserve-3d;
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transition-property: background-color, border-color, box-shadow, opacity !important;
+}

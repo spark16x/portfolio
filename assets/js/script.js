@@ -161,28 +161,40 @@ document.addEventListener('DOMContentLoaded', () => {
     // Start typewriter
     if (typewriterElement) setTimeout(typeWriter, 1000);
 
-    // --- Desktop Mouse Parallax Engine ---
+    // --- Unified Parallax & Mobile Device Movement Engine ---
     const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const profileCard = document.getElementById('profile-card');
     const parallaxElements = document.querySelectorAll('[data-parallax-speed]');
-    const tiltCards = document.querySelectorAll('#skills .bg-white, #clients .group, #about .bg-white');
+    const tiltCards = document.querySelectorAll('#skills .bg-white, #clients .group, #about .bg-white, #contact > div');
 
     if (!isReducedMotion) {
         let mouseX = 0;
         let mouseY = 0;
         let targetX = 0;
         let targetY = 0;
+
         let isHoveringProfileCard = false;
         let cardTiltX = 0;
         let cardTiltY = 0;
 
-        // Desktop window mouse movement listener
+        // Detector strictly for mobile devices (smartphones & tablets)
+        const isMobileDevice = () => {
+            const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+            const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            return (isMobileUA || isTouch) && window.innerWidth <= 1024;
+        };
+
+        let deviceMotionActive = false;
+        let initialBeta = null;
+        let initialGamma = null;
+
+        // 1. Desktop Mouse Movement Listener (Active for desktop screens)
         window.addEventListener('mousemove', (e) => {
-            // Normalized X and Y from -1 to 1 relative to window center
+            if (isMobileDevice()) return; // Device movement handles mobile; ignore mousemove on mobile
+
             targetX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
             targetY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
 
-            // Direct local tilt if hovering over profile card
             if (profileCard) {
                 const rect = profileCard.getBoundingClientRect();
                 if (
@@ -197,7 +209,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     const centerX = rect.width / 2;
                     const centerY = rect.height / 2;
 
-                    // Direct interactive 3D rotation up to 25 deg
                     cardTiltX = ((cardY - centerY) / centerY) * -22;
                     cardTiltY = ((cardX - centerX) / centerX) * 22;
                 } else {
@@ -206,21 +217,191 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Smooth Lerp Animation Loop using requestAnimationFrame
-        function animateParallax() {
-            // Linear interpolation for silky smooth springy movement
-            mouseX += (targetX - mouseX) * 0.08;
-            mouseY += (targetY - mouseY) * 0.08;
+        // 2. Mobile Device Movement Engine (Combines deviceorientation + devicemotion for Mobile Devices)
+        let motionX = 0;
+        let motionY = 0;
 
-            // 1. Parallax background elements & atmospheric blurs
+        function handleDeviceOrientation(e) {
+            if (!isMobileDevice()) return;
+
+            let beta = e.beta;   // Pitch [-180, 180] (Front to back tilt angle)
+            let gamma = e.gamma; // Roll [-90, 90] (Left to right tilt angle)
+
+            if (beta === null || beta === undefined) beta = 0;
+            if (gamma === null || gamma === undefined) gamma = 0;
+
+            deviceMotionActive = true;
+
+            // Handle Landscape orientation angle swap
+            const isLandscape = window.matchMedia("(orientation: landscape)").matches;
+            if (isLandscape) {
+                const temp = beta;
+                beta = gamma;
+                gamma = -temp;
+            }
+
+            // Auto-calibrate initial resting orientation angle smoothly
+            if (initialBeta === null || initialGamma === null) {
+                initialBeta = beta;
+                initialGamma = gamma;
+            } else {
+                // Slow drift baseline calibration (re-centers smoothly if holding posture changes)
+                initialBeta += (beta - initialBeta) * 0.005;
+                initialGamma += (gamma - initialGamma) * 0.005;
+            }
+
+            // Relative tilt angles clamped to [-25, 25] degrees
+            const diffGamma = Math.max(-25, Math.min(25, gamma - initialGamma));
+            const diffBeta = Math.max(-25, Math.min(25, beta - initialBeta));
+
+            // Map orientation tilt to targetX & targetY [-1, 1]
+            targetX = diffGamma / 25;
+            targetY = diffBeta / 25;
+
+            // Show mobile motion status chip
+            const motionChip = document.getElementById('mobile-motion-chip');
+            if (motionChip) {
+                motionChip.classList.remove('hidden');
+                motionChip.classList.add('flex');
+            }
+        }
+
+        // Handle physical movement acceleration & rotational dynamics via devicemotion
+        let lastMotionShakeTime = 0;
+        function handleDeviceMotion(e) {
+            if (!isMobileDevice()) return;
+
+            deviceMotionActive = true;
+
+            // Extract physical acceleration & rotation rate
+            const acc = e.acceleration || e.accelerationIncludingGravity;
+            const rot = e.rotationRate;
+
+            if (acc) {
+                const accX = acc.x || 0;
+                const accY = acc.y || 0;
+                const accZ = acc.z || 0;
+
+                // Add physical movement shift to motion vector (clamped)
+                motionX += accX * 0.04;
+                motionY += accY * 0.04;
+
+                // Physical phone shake drop ripple trigger on sudden motion (> 18 m/s^2)
+                const totalAcc = Math.sqrt(accX * accX + accY * accY + accZ * accZ);
+                const now = Date.now();
+                if (totalAcc > 18 && now - lastMotionShakeTime > 400) {
+                    lastMotionShakeTime = now;
+                    if (typeof $ !== 'undefined' && $('#home').ripples) {
+                        try {
+                            const homeWidth = $('#home').width() || 300;
+                            const homeHeight = $('#home').height() || 400;
+                            const randomX = Math.random() * homeWidth;
+                            const randomY = Math.random() * homeHeight;
+                            $('#home').ripples('drop', randomX, randomY, 15, 0.05);
+                        } catch(err) {}
+                    }
+                }
+            }
+
+            if (rot) {
+                const rotBeta = rot.beta || 0;   // deg/s around X axis
+                const rotGamma = rot.gamma || 0; // deg/s around Y axis
+                motionX += (rotGamma / 100) * 0.1;
+                motionY += (rotBeta / 100) * 0.1;
+            }
+        }
+
+        let sensorsInitialized = false;
+        let permissionRequested = false;
+
+        // Initialize Device Orientation & Motion (Mobile devices only, supports Android & iOS 13+)
+        function initMobileSensors() {
+            if (!isMobileDevice() || sensorsInitialized) return;
+            sensorsInitialized = true;
+
+            // Attach standard orientation and absolute orientation listeners immediately
+            if (window.DeviceOrientationEvent) {
+                window.addEventListener('deviceorientation', handleDeviceOrientation, true);
+                window.addEventListener('deviceorientationabsolute', handleDeviceOrientation, true);
+            }
+            if (window.DeviceMotionEvent) {
+                window.addEventListener('devicemotion', handleDeviceMotion, { passive: true, capture: true });
+            }
+
+            // iOS 13+ permission request on touch/click
+            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                const requestPermissions = () => {
+                    if (permissionRequested) return;
+                    permissionRequested = true;
+
+                    DeviceOrientationEvent.requestPermission()
+                        .then(state => {
+                            if (state === 'granted') {
+                                // Listeners already attached above; iOS fires existing listeners once permission is granted
+                            }
+                        })
+                        .catch(console.error);
+
+                    if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
+                        DeviceMotionEvent.requestPermission()
+                            .then(state => {
+                                if (state === 'granted') {
+                                    // Listener already attached above
+                                }
+                            })
+                            .catch(console.error);
+                    }
+                };
+
+                window.addEventListener('touchstart', requestPermissions, { once: true });
+                window.addEventListener('click', requestPermissions, { once: true });
+            }
+        }
+
+        initMobileSensors();
+
+        // Re-evaluate on resize / orientation change
+        window.addEventListener('resize', () => {
+            if (!isMobileDevice()) {
+                if (deviceMotionActive) {
+                    deviceMotionActive = false;
+                    window.removeEventListener('deviceorientation', handleDeviceOrientation, true);
+                    window.removeEventListener('deviceorientationabsolute', handleDeviceOrientation, true);
+                    window.removeEventListener('devicemotion', handleDeviceMotion, { capture: true });
+                    const motionChip = document.getElementById('mobile-motion-chip');
+                    if (motionChip) {
+                        motionChip.classList.add('hidden');
+                        motionChip.classList.remove('flex');
+                    }
+                }
+            } else {
+                sensorsInitialized = false;
+                permissionRequested = false;
+                initMobileSensors();
+            }
+        });
+
+        // 3. Smooth Animation Loop combining Orientation & Motion Dynamics
+        function animateParallax() {
+            // Decay devicemotion physical movement inertia
+            motionX *= 0.85;
+            motionY *= 0.85;
+
+            // Combine device orientation tilt + devicemotion movement offset
+            const combinedTargetX = isMobileDevice() ? Math.max(-1.5, Math.min(1.5, targetX + motionX)) : targetX;
+            const combinedTargetY = isMobileDevice() ? Math.max(-1.5, Math.min(1.5, targetY + motionY)) : targetY;
+
+            mouseX += (combinedTargetX - mouseX) * 0.08;
+            mouseY += (combinedTargetY - mouseY) * 0.08;
+
+            // Background floating parallax elements
             parallaxElements.forEach(el => {
                 const speed = parseFloat(el.getAttribute('data-parallax-speed')) || 20;
                 const xOffset = (mouseX * speed).toFixed(2);
                 const yOffset = (mouseY * speed).toFixed(2);
-
                 const z = parseFloat(el.getAttribute('data-parallax-z')) || 0;
+
                 if (el.classList.contains('animate-float')) {
-                    // Set CSS variables for float animation keyframes
                     el.style.setProperty('--px', `${xOffset}px`);
                     el.style.setProperty('--py', `${yOffset}px`);
                 } else {
@@ -228,10 +409,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            // 2. 3D Parallax Profile Card (Global mouse move + local hover)
+            // 3D Parallax Profile Card
             if (profileCard) {
                 let finalRotateX, finalRotateY;
-                if (isHoveringProfileCard) {
+                if (!isMobileDevice() && isHoveringProfileCard) {
                     finalRotateX = cardTiltX.toFixed(2);
                     finalRotateY = cardTiltY.toFixed(2);
                 } else {
@@ -244,17 +425,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 profileCard.style.transform = `rotateX(${finalRotateX}deg) rotateY(${finalRotateY}deg)`;
             }
 
+            // 3D Card Tilt for Parallax Cards on Mobile (Exclusively active on Mobile via Device Orientation & Motion)
+            if (isMobileDevice()) {
+                tiltCards.forEach(card => {
+                    const tiltX = (mouseY * -14).toFixed(2);
+                    const tiltY = (mouseX * 14).toFixed(2);
+                    card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateZ(8px)`;
+                });
+            }
+
             requestAnimationFrame(animateParallax);
         }
 
         requestAnimationFrame(animateParallax);
 
-        // 3. Interactive Card 3D Tilt on Hover (Skills, About & Client Cards)
+        // 4. Interactive Card 3D Tilt on Mouse Hover (Desktop Only)
         tiltCards.forEach(card => {
             card.style.transformStyle = 'preserve-3d';
             card.style.transition = 'transform 0.15s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s ease';
 
             card.addEventListener('mousemove', (e) => {
+                if (isMobileDevice()) return; // Skip hover tilt on mobile devices
                 const rect = card.getBoundingClientRect();
                 const cardX = e.clientX - rect.left;
                 const cardY = e.clientY - rect.top;
@@ -268,35 +459,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             card.addEventListener('mouseleave', () => {
+                if (isMobileDevice()) return; // Skip mouseleave on mobile devices
                 card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
             });
         });
     }
-
-    // Mobile Device Orientation for Parallax
-    if (window.DeviceOrientationEvent && profileCard) {
-        let initialBeta = null;
-        let initialGamma = null;
-
-        window.addEventListener('deviceorientation', (e) => {
-            if (isReducedMotion || window.innerWidth >= 768) return;
-
-            let beta = e.beta;   // In degree [-180,180)
-            let gamma = e.gamma; // In degree [-90,90)
-
-            if (beta === null || gamma === null) return;
-
-            if (initialBeta === null) initialBeta = beta;
-            if (initialGamma === null) initialGamma = gamma;
-
-            let diffBeta = Math.max(-20, Math.min(20, beta - initialBeta));
-            let diffGamma = Math.max(-20, Math.min(20, gamma - initialGamma));
-
-            const rotateX = (diffBeta * -1).toFixed(2);
-            const rotateY = diffGamma.toFixed(2);
-
-            profileCard.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-        });
-    }
-
 });
