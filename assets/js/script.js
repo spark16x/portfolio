@@ -160,4 +160,68 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Start typewriter
     if (typewriterElement) setTimeout(typeWriter, 1000);
+
+    // --- 3D Parallax Profile Card ---
+    const profileCard = document.getElementById('profile-card');
+    if (profileCard) {
+        // Desktop mouse movement
+        profileCard.parentElement.addEventListener('mousemove', (e) => {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+            const rect = profileCard.parentElement.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const rotateX = ((y - centerY) / centerY) * -15; // Max 15 deg rotation
+            const rotateY = ((x - centerX) / centerX) * 15;
+
+            profileCard.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        profileCard.parentElement.addEventListener('mouseleave', () => {
+            profileCard.style.transform = `rotateX(0deg) rotateY(0deg)`;
+            profileCard.style.transition = 'transform 0.5s ease-out';
+            setTimeout(() => {
+                profileCard.style.transition = 'transform 0.1s ease-out';
+            }, 500);
+        });
+
+        // Mobile device orientation
+        if (window.DeviceOrientationEvent) {
+            let initialBeta = null;
+            let initialGamma = null;
+
+            window.addEventListener('deviceorientation', (e) => {
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+                // Allow user to interact first to request permission on iOS if needed later,
+                // but just listening for standard orientation here.
+
+                let beta = e.beta;   // In degree in the range [-180,180) - x axis
+                let gamma = e.gamma; // In degree in the range [-90,90) - y axis
+
+                if (beta === null || gamma === null) return;
+
+                if (initialBeta === null) initialBeta = beta;
+                if (initialGamma === null) initialGamma = gamma;
+
+                // Relative movement
+                let diffBeta = beta - initialBeta;
+                let diffGamma = gamma - initialGamma;
+
+                // Limit the rotation
+                diffBeta = Math.max(-20, Math.min(20, diffBeta));
+                diffGamma = Math.max(-20, Math.min(20, diffGamma));
+
+                const rotateX = diffBeta * -1; // Adjust multiplier as needed
+                const rotateY = diffGamma;
+
+                profileCard.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+        }
+    }
+
 });
