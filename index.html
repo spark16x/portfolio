@@ -126,22 +126,31 @@
             },
         }
     </script>
+    <!-- Lenis Smooth Scroll CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.css"/>
     <link rel="stylesheet" href="assets/css/style.css"/>
 
-    <!-- GSAP & Ripple -->
+    <!-- Lenis & Anime.js & Ripple -->
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ripples/0.5.3/jquery.ripples.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 </head>
 <body class="bg-background text-on-surface font-body-md overflow-x-hidden selection:bg-primary selection:text-on-primary">
+    <!-- Spark Center Intro Loading Overlay -->
+    <div id="intro-screen" class="fixed inset-0 z-[500] bg-background/95 backdrop-blur-2xl flex flex-col items-center justify-center pointer-events-auto select-none transition-opacity duration-700">
+        <div id="intro-logo" class="font-headline-md text-6xl md:text-8xl font-extrabold tracking-tighter text-primary flex items-center gap-1 opacity-0">
+            Spark<span class="text-tertiary-container">.</span>
+        </div>
+    </div>
+
     <div id="intro" class="intro" aria-hidden="true"></div>
     <!-- Atmospheric Blurs -->
     <div class="fixed top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-secondary-container/30 blur-[120px] -z-10 animate-float" data-parallax-speed="-35"></div>
     <div class="fixed bottom-[10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-tertiary-fixed/30 blur-[100px] -z-10 animate-float" style="animation-delay: -6s;" data-parallax-speed="30"></div>
 
     <!-- Back to Top Button -->
-    <button aria-label="Back to top" class="fixed bottom-lg right-lg z-[60] bg-primary text-on-primary w-12 h-12 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-90" id="back-to-top">
+    <button aria-label="Back to top" class="fixed bottom-lg right-lg z-[60] bg-primary text-on-primary w-12 h-12 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-90 btn-fill btn-fill-inverse" id="back-to-top">
         <span class="material-symbols-outlined">arrow_upward</span>
     </button>
 
@@ -153,7 +162,7 @@
 
     <!-- TopNavBar -->
     <nav class="sticky top-0 w-full z-50 flex justify-between items-center px-gutter py-sm max-w-container-max mx-auto glass border-b border-outline-variant/30">
-        <div class="font-headline-md text-headline-md font-bold tracking-tighter text-on-surface">Spark.</div>
+        <div id="nav-logo" class="font-headline-md text-headline-md font-bold tracking-tighter text-on-surface opacity-0 transition-opacity">Spark.</div>
         <div class="hidden md:flex items-center gap-lg">
             <a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md transition-all nav-link" href="#home">Home</a>
             <a class="text-secondary hover:text-primary transition-colors font-body-md text-body-md nav-link" href="#about">About</a>
@@ -161,7 +170,7 @@
             <a class="text-secondary hover:text-primary transition-colors font-body-md text-body-md nav-link" href="#clients">Clients</a>
             <a class="text-secondary hover:text-primary transition-colors font-body-md text-body-md nav-link" href="#contact">Contact</a>
         </div>
-        <a class="bg-primary text-on-primary px-lg py-xs rounded-full font-label-sm text-label-sm hover:opacity-80 transition-opacity active:scale-95 duration-200 magnetic-btn" href="https://www.fiverr.com/s/Q7Lj2de">Hire Me</a>
+        <a class="bg-primary text-on-primary px-lg py-xs rounded-full font-label-sm text-label-sm active:scale-95 magnetic-btn btn-fill btn-fill-inverse shadow-sm" href="https://www.fiverr.com/s/Q7Lj2de"><span>Hire Me</span></a>
     </nav>
 
     <main class="max-w-container-max mx-auto px-gutter">
@@ -172,9 +181,9 @@
                 <h1 class="font-display-xl-mobile md:font-display-xl text-display-xl-mobile md:text-display-xl max-w-2xl leading-tight">I'm a <br/><span class="bg-primary text-on-primary px-2 inline-block typing cursor-blink" id="typewriter">Creative Web Developer</span></h1>
                 <p class="font-body-lg text-body-lg text-secondary max-w-xl">A student and web developer building modern, experimental, and AI-powered experiences. I enjoy experimenting, learning quickly, and shipping ideas that feel both useful and creative.</p>
                 <div class="flex flex-wrap gap-sm pt-sm items-center">
-                    <a class="bg-primary text-on-primary px-xl py-md rounded-full font-label-sm text-label-sm hover:shadow-lg transition-all active:scale-95 magnetic-btn inline-block text-center" href="https://www.fiverr.com/s/Q7Lj2de">Let's work together</a>
-                    <a class="bg-surface border border-outline-variant text-primary w-12 h-12 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-all active:scale-95 magnetic-btn" href="https://github.com/spark16x" aria-label="GitHub"><i class="fa fa-github" aria-hidden="true"></i></a>
-                    <a class="bg-surface border border-outline-variant text-primary w-12 h-12 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-all active:scale-95 magnetic-btn" href="https://instagram.com/spark16.x" aria-label="Instagram"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                    <a class="bg-primary text-on-primary px-xl py-md rounded-full font-label-sm text-label-sm active:scale-95 magnetic-btn btn-fill btn-fill-inverse shadow-md inline-block text-center" href="https://www.fiverr.com/s/Q7Lj2de"><span>Let's work together</span></a>
+                    <a class="bg-surface border border-outline-variant text-primary w-12 h-12 flex items-center justify-center rounded-full active:scale-95 magnetic-btn btn-fill btn-fill-primary" href="https://github.com/spark16x" aria-label="GitHub"><i class="fa fa-github" aria-hidden="true"></i></a>
+                    <a class="bg-surface border border-outline-variant text-primary w-12 h-12 flex items-center justify-center rounded-full active:scale-95 magnetic-btn btn-fill btn-fill-primary" href="https://instagram.com/spark16.x" aria-label="Instagram"><i class="fa fa-instagram" aria-hidden="true"></i></a>
                 </div>
             </div>
             <div class="flex-1 flex justify-center md:justify-end reveal p-4" style="perspective: 1200px;">
@@ -290,7 +299,7 @@
                         <span class="bg-surface-container text-secondary px-sm py-1 rounded-full text-label-sm font-label-sm">Git/GitHub</span>
                         <span class="bg-surface-container text-secondary px-sm py-1 rounded-full text-label-sm font-label-sm">Firebase</span>
                         <span class="bg-surface-container text-secondary px-sm py-1 rounded-full text-label-sm font-label-sm">AI APIs</span>
-                        <span class="bg-surface-container text-secondary px-sm py-1 rounded-full text-label-sm font-label-sm">GSAP</span>
+                        <span class="bg-surface-container text-secondary px-sm py-1 rounded-full text-label-sm font-label-sm">Anime.js</span>
                         <span class="bg-surface-container text-secondary px-sm py-1 rounded-full text-label-sm font-label-sm">Vercel</span>
                         <span class="bg-surface-container text-secondary px-sm py-1 rounded-full text-label-sm font-label-sm">Performance Tuning</span>
                     </div>
@@ -376,10 +385,10 @@
                 <h2 class="font-display-xl-mobile md:font-headline-lg text-display-xl-mobile md:text-headline-lg mb-md">Let's build something <span class="text-secondary">amazing</span></h2>
                 <p class="text-secondary font-body-lg mb-xl">Have an idea or project? I’d love to collaborate and turn it into a powerful digital experience.</p>
                 <div class="flex flex-wrap justify-center gap-md">
-                    <a href="mailto:spark2009971@gmail.com" class="px-xl py-md rounded-full border border-outline-variant text-primary hover:bg-surface-container-low transition-all magnetic-btn font-label-sm">Email Me</a>
-                    <a href="https://github.com/spark16x" class="px-xl py-md rounded-full border border-outline-variant text-primary hover:bg-surface-container-low transition-all magnetic-btn font-label-sm">GitHub</a>
-                    <a href="https://instagram.com/spark16.x" class="px-xl py-md rounded-full border border-outline-variant text-primary hover:bg-surface-container-low transition-all magnetic-btn font-label-sm">Instagram</a>
-                    <a href="https://www.fiverr.com/s/Q7Lj2de" class="px-xl py-md rounded-full bg-primary text-on-primary hover:shadow-lg active:scale-95 transition-all magnetic-btn font-label-sm">Hire Me</a>
+                    <a href="mailto:spark2009971@gmail.com" class="px-xl py-md rounded-full border border-outline-variant text-primary magnetic-btn font-label-sm btn-fill btn-fill-primary"><span>Email Me</span></a>
+                    <a href="https://github.com/spark16x" class="px-xl py-md rounded-full border border-outline-variant text-primary magnetic-btn font-label-sm btn-fill btn-fill-primary"><span>GitHub</span></a>
+                    <a href="https://instagram.com/spark16.x" class="px-xl py-md rounded-full border border-outline-variant text-primary magnetic-btn font-label-sm btn-fill btn-fill-primary"><span>Instagram</span></a>
+                    <a href="https://www.fiverr.com/s/Q7Lj2de" class="px-xl py-md rounded-full bg-primary text-on-primary active:scale-95 magnetic-btn font-label-sm btn-fill btn-fill-inverse shadow-md"><span>Hire Me</span></a>
                 </div>
             </div>
         </section>

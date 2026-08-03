@@ -1,4 +1,79 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Lenis Smooth Scrolling Engine ---
+    let lenis = null;
+    if (typeof Lenis !== 'undefined') {
+        lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smoothWheel: true,
+            touchMultiplier: 2
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+    }
+
+    // --- "Spark." Loading Intro: Center to Navbar Animation ---
+    const introScreen = document.getElementById('intro-screen');
+    const introLogo = document.getElementById('intro-logo');
+    const navLogo = document.getElementById('nav-logo');
+
+    if (introScreen && introLogo && navLogo) {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || typeof anime === 'undefined') {
+            navLogo.classList.remove('opacity-0');
+            introScreen.style.display = 'none';
+        } else {
+            // Lock body scroll during intro
+            document.body.style.overflow = 'hidden';
+
+            // Calculate precise pixel distance from center to nav-logo
+            const navRect = navLogo.getBoundingClientRect();
+            const introRect = introLogo.getBoundingClientRect();
+
+            const deltaX = (navRect.left + navRect.width / 2) - (introRect.left + introRect.width / 2);
+            const deltaY = (navRect.top + navRect.height / 2) - (introRect.top + introRect.height / 2);
+            const scaleTarget = navRect.height / introRect.height;
+
+            const introTimeline = anime.timeline({
+                easing: 'easeInOutExpo',
+                complete: () => {
+                    navLogo.classList.remove('opacity-0');
+                    introScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        introScreen.style.display = 'none';
+                        document.body.style.overflow = '';
+                    }, 500);
+                }
+            });
+
+            introTimeline
+            .add({
+                targets: introLogo,
+                scale: [0.6, 1.1, 1],
+                opacity: [0, 1],
+                duration: 700,
+                easing: 'easeOutBack'
+            })
+            .add({
+                targets: introLogo,
+                translateX: deltaX,
+                translateY: deltaY,
+                scale: scaleTarget,
+                duration: 850,
+                easing: 'cubicBezier(0.77, 0, 0.175, 1)'
+            }, '+=300')
+            .add({
+                targets: introScreen,
+                opacity: 0,
+                duration: 500,
+                easing: 'easeOutQuad'
+            }, '-=400');
+        }
+    }
+
     // --- Intersection Observer for Fade-up Animations ---
     const revealCallback = (entries, observer) => {
         entries.forEach(entry => {
@@ -43,6 +118,30 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // --- Dynamic Cursor-Aware Fill Button Animation ---
+    const initFillButtons = () => {
+        document.querySelectorAll('.btn-fill').forEach(btn => {
+            let fillBg = btn.querySelector('.btn-fill-bg');
+            if (!fillBg) {
+                fillBg = document.createElement('span');
+                fillBg.className = 'btn-fill-bg';
+                btn.appendChild(fillBg);
+            }
+
+            const updatePosition = (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                fillBg.style.left = `${x}px`;
+                fillBg.style.top = `${y}px`;
+            };
+
+            btn.addEventListener('mouseenter', updatePosition);
+            btn.addEventListener('mouseleave', updatePosition);
+        });
+    };
+    initFillButtons();
+
     // --- Back to Top ---
     const btt = document.getElementById('back-to-top');
     if (btt) {
@@ -54,11 +153,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         btt.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (lenis) {
+                lenis.scrollTo(0);
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         });
     }
 
-    // --- Smooth Scroll Navigation ---
+    // --- Smooth Scroll Navigation with Sticky Header Offset ---
+    const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+    const sections = document.querySelectorAll('section[id]');
+
     document.querySelectorAll('.nav-link').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
@@ -66,11 +172,47 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 const target = document.querySelector(href);
                 if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
+                    const navOffset = -75;
+                    if (lenis) {
+                        lenis.scrollTo(target, { offset: navOffset });
+                    } else {
+                        const targetPosition = target.getBoundingClientRect().top + window.scrollY + navOffset;
+                        window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                    }
                 }
             }
         });
     });
+
+    // --- Dynamic ScrollSpy: Switch Active Nav Link on Scroll ---
+    function updateActiveNavLink() {
+        const scrollPosition = window.scrollY + 150;
+
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            const sectionId = section.getAttribute('id');
+
+            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                navLinks.forEach(link => {
+                    if (link.getAttribute('href') === `#${sectionId}`) {
+                        link.classList.add('text-primary', 'font-bold', 'border-b-2', 'border-primary', 'pb-1');
+                        link.classList.remove('text-secondary');
+                    } else {
+                        link.classList.remove('text-primary', 'font-bold', 'border-b-2', 'border-primary', 'pb-1');
+                        link.classList.add('text-secondary');
+                    }
+                });
+            }
+        });
+    }
+
+    if (lenis) {
+        lenis.on('scroll', updateActiveNavLink);
+    } else {
+        window.addEventListener('scroll', updateActiveNavLink);
+    }
+    updateActiveNavLink();
 
     // --- Typewriter Effect ---
     const phrases = [
@@ -135,26 +277,29 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn('Ripples not supported:', e);
     }
 
-    // --- GSAP Scroll Animations ---
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-        gsap.registerPlugin(ScrollTrigger);
-
-        // Add skill bar animation using GSAP like original
-        gsap.utils.toArray('.bg-surface-container-high').forEach(bar => {
-            const innerBar = bar.querySelector('div');
-            if (innerBar) {
-                const width = innerBar.style.width;
-                innerBar.style.width = '0%';
-                gsap.to(innerBar, {
-                    width: width,
-                    duration: 1.5,
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: bar,
-                        start: "top 90%",
+    // --- Anime.js Scroll Animations ---
+    if (typeof anime !== 'undefined') {
+        const skillObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const innerBar = entry.target.querySelector('div');
+                    if (innerBar) {
+                        const targetWidth = innerBar.style.width;
+                        innerBar.style.width = '0%';
+                        anime({
+                            targets: innerBar,
+                            width: targetWidth,
+                            duration: 1500,
+                            easing: 'easeOutCubic'
+                        });
                     }
-                });
-            }
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 });
+
+        document.querySelectorAll('.bg-surface-container-high').forEach(bar => {
+            skillObserver.observe(bar);
         });
     }
 

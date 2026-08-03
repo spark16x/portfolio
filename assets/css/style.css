@@ -66,6 +66,69 @@
     transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
+/* --- Dynamic Cursor-Aware Fill Button Animation --- */
+.btn-fill {
+    position: relative;
+    overflow: hidden !important;
+    z-index: 1;
+    isolation: isolate;
+    transition: color 0.4s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.btn-fill span, 
+.btn-fill i, 
+.btn-fill .material-symbols-outlined {
+    position: relative;
+    z-index: 10;
+    transition: color 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.btn-fill .btn-fill-bg {
+    position: absolute;
+    width: 260%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background: #000000;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.55s cubic-bezier(0.23, 1, 0.32, 1);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.btn-fill-inverse .btn-fill-bg {
+    background: #ffffff;
+}
+
+.btn-fill-primary .btn-fill-bg {
+    background: #000000;
+}
+
+.btn-fill:hover .btn-fill-bg {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Hover text & icon color shifts */
+.btn-fill.btn-fill-inverse:hover {
+    color: #000000 !important;
+}
+
+.btn-fill.btn-fill-inverse:hover span,
+.btn-fill.btn-fill-inverse:hover i,
+.btn-fill.btn-fill-inverse:hover .material-symbols-outlined {
+    color: #000000 !important;
+}
+
+.btn-fill.btn-fill-primary:hover {
+    color: #ffffff !important;
+    border-color: #000000 !important;
+}
+
+.btn-fill.btn-fill-primary:hover span,
+.btn-fill.btn-fill-primary:hover i,
+.btn-fill.btn-fill-primary:hover .material-symbols-outlined {
+    color: #ffffff !important;
+}
+
 #back-to-top {
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     transform: translateY(100px);

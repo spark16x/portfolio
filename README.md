@@ -111,6 +111,6 @@ If you want next level:
 
 * ripple only in **hero section**
 * ripple reacts to **scroll + clicks**
-* combine with **GSAP parallax + glassmorphism**
+* combine with **Anime.js parallax + glassmorphism**
 
 Say *“upgrade ripple to premium”* and I’ll stack it 🔥
