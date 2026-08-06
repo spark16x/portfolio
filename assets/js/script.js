@@ -50,27 +50,27 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             introTimeline
-            .add({
-                targets: introLogo,
-                scale: [0.6, 1.1, 1],
-                opacity: [0, 1],
-                duration: 700,
-                easing: 'easeOutBack'
-            })
-            .add({
-                targets: introLogo,
-                translateX: deltaX,
-                translateY: deltaY,
-                scale: scaleTarget,
-                duration: 850,
-                easing: 'cubicBezier(0.77, 0, 0.175, 1)'
-            }, '+=300')
-            .add({
-                targets: introScreen,
-                opacity: 0,
-                duration: 500,
-                easing: 'easeOutQuad'
-            }, '-=400');
+                .add({
+                    targets: introLogo,
+                    scale: [0.6, 1.1, 1],
+                    opacity: [0, 1],
+                    duration: 700,
+                    easing: 'easeOutBack'
+                })
+                .add({
+                    targets: introLogo,
+                    translateX: deltaX,
+                    translateY: deltaY,
+                    scale: scaleTarget,
+                    duration: 850,
+                    easing: 'cubicBezier(0.77, 0, 0.175, 1)'
+                }, '+=300')
+                .add({
+                    targets: introScreen,
+                    opacity: 0,
+                    duration: 500,
+                    easing: 'easeOutQuad'
+                }, '-=400');
         }
     }
 
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sections = document.querySelectorAll('section[id]');
 
     document.querySelectorAll('.nav-link').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
+        anchor.addEventListener('click', function (e) {
             const href = this.getAttribute('href');
             if (href && href.startsWith('#')) {
                 e.preventDefault();
@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             let lastRippleTime = 0;
-            $('#home').on('mousemove', function(e) {
+            $('#home').on('mousemove', function (e) {
                 const now = Date.now();
                 if (now - lastRippleTime < 80) return;
                 lastRippleTime = now;
@@ -443,7 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             const randomX = Math.random() * homeWidth;
                             const randomY = Math.random() * homeHeight;
                             $('#home').ripples('drop', randomX, randomY, 15, 0.05);
-                        } catch(err) {}
+                        } catch (err) { }
                     }
                 }
             }

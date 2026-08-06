@@ -48,6 +48,7 @@
 }
 
 @keyframes float {
+
     0%,
     100% {
         transform: translate(var(--px, 0px), var(--py, 0px)) scale(1);
@@ -75,8 +76,8 @@
     transition: color 0.4s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.btn-fill span, 
-.btn-fill i, 
+.btn-fill span,
+.btn-fill i,
 .btn-fill .material-symbols-outlined {
     position: relative;
     z-index: 10;
@@ -166,7 +167,8 @@
     }
 }
 
-.intro, #intro {
+.intro,
+#intro {
     position: fixed;
     top: 0;
     left: 0;
@@ -183,7 +185,7 @@
 #skills .bg-white,
 #clients .group,
 #about .bg-white,
-#contact > div {
+#contact>div {
     transform-style: preserve-3d;
     will-change: transform;
     -webkit-backface-visibility: hidden;
