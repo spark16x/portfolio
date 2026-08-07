@@ -1,116 +1,16 @@
-Got it—you want a **real water ripple effect (like liquid distortion), not just circles**. That means using a canvas-based plugin. The cleanest way: **jQuery Ripples**.
+# React + Vite
 
-This gives you that **Awwwards-level water interaction** 💧
+This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
----
+Currently, two official plugins are available:
 
-## ⚡ Step 1: Add CDN (VERY IMPORTANT)
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-Put this before your closing `</body>`:
+## React Compiler
 
-```html
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ripples/0.5.3/jquery.ripples.min.js"></script>
-```
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
----
+## Expanding the Oxlint configuration
 
-## ⚡ Step 2: Your JS (simple + powerful)
-
-```js id="lq3p7r"
-$(document).ready(function () {
-  try {
-    $('body').ripples({
-      resolution: 512,
-      dropRadius: 20,
-      perturbance: 0.04,
-    });
-
-    // cursor-follow ripple
-    $(document).on('mousemove', function (e) {
-      $('body').ripples('drop', e.clientX, e.clientY, 10, 0.04);
-    });
-
-  } catch (e) {
-    console.warn('Ripples not supported');
-  }
-});
-```
-
----
-
-## 🎨 Step 3: CSS (IMPORTANT for visibility)
-
-Water effect only looks good if background is right:
-
-```css id="p2n8vz"
-body {
-  background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e') no-repeat center center/cover;
-  min-height: 100vh;
-}
-```
-
-👉 You can replace with:
-
-* dark gradient (for neon water)
-* glass UI background
-* your portfolio bg
-
----
-
-## 🔥 Pro Tweaks (make it INSANE)
-
-### 1. Smooth + less spam
-
-```js
-let last = 0;
-$(document).on('mousemove', function (e) {
-  const now = Date.now();
-  if (now - last < 80) return;
-  last = now;
-
-  $('body').ripples('drop', e.clientX, e.clientY, 10, 0.04);
-});
-```
-
----
-
-### 2. Stronger water distortion
-
-```js
-perturbance: 0.08
-```
-
----
-
-### 3. Bigger ripples
-
-```js
-dropRadius: 30
-```
-
----
-
-## ⚠️ Important Notes
-
-* ❌ Won’t work properly on **mobile** (WebGL limitation)
-* ❌ Needs **background image or visible surface**
-* ✅ Works best on **hero section / full page**
-
----
-
-## ⚡ Result
-
-* Real **fluid distortion**
-* Cursor creates **water waves**
-* Looks like **liquid glass UI**
-
----
-
-If you want next level:
-
-* ripple only in **hero section**
-* ripple reacts to **scroll + clicks**
-* combine with **Anime.js parallax + glassmorphism**
-
-Say *“upgrade ripple to premium”* and I’ll stack it 🔥
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.

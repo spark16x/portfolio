@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .material-symbols-outlined {
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     vertical-align: middle;
@@ -176,7 +180,7 @@
     height: 100vh;
     pointer-events: none;
     z-index: 400;
-    background: url('../images/ezgif-3b39feaa49d63754.gif') center/cover no-repeat;
+    background: url('/assets/images/ezgif-3b39feaa49d63754.gif') center/cover no-repeat;
     mix-blend-mode: screen;
 }
 
