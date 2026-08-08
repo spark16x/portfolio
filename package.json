@@ -9,7 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@lenis/react": "^1.1.18",
     "framer-motion": "^11.11.17",
     "lenis": "^1.1.18",
     "lucide-react": "^0.460.0",
