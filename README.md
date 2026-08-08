@@ -1,116 +1,124 @@
-Got it—you want a **real water ripple effect (like liquid distortion), not just circles**. That means using a canvas-based plugin. The cleanest way: **jQuery Ripples**.
+# Spark — Pratham Vig | Personal Portfolio
 
-This gives you that **Awwwards-level water interaction** 💧
+A modern, high-performance developer portfolio showcasing digital experiences, SaaS products, and creative experiments. Built with **React 18**, **TypeScript**, **Vite**, **Tailwind CSS**, and **Lenis Smooth Scroll**.
+
+![Spark Portfolio](/assets/images/page.png)
 
 ---
 
-## ⚡ Step 1: Add CDN (VERY IMPORTANT)
+## ✨ Features
 
-Put this before your closing `</body>`:
+- ⚡ **React 18 & TypeScript**: Component-driven architecture with strict type safety.
+- 🚀 **Vite Bundler**: Instant Hot Module Replacement (HMR) and optimized build outputs.
+- 🌊 **Lenis Smooth Scrolling**: Buttery-smooth wheel and touch scrolling with dynamic ScrollSpy navbar indicators.
+- 🧲 **Magnetic Cursor & Fill Buttons**: Dynamic, cursor-aware button fill expansion animations.
+- 🧊 **3D Card Perspective Tilt**: Interactive 3D tilt effects on mouse hover and mobile device orientation.
+- ⌨️ **Typewriter Hero**: Animated text effect cycling through developer titles.
+- 🎨 **Material Design 3 Token System**: Custom extended Tailwind CSS palette, typography (`Geist`, `Inter`), and glassmorphism styling.
+- 📱 **Fully Responsive**: Mobile-first layout with touch optimizations and motion chip indicator.
 
-```html
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ripples/0.5.3/jquery.ripples.min.js"></script>
+---
+
+## 🛠️ Tech Stack
+
+- **Framework**: [React 18](https://react.dev/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Build Tool**: [Vite 5](https://vitejs.dev/)
+- **Styling**: [Tailwind CSS 3](https://tailwindcss.com/)
+- **Smooth Scroll Engine**: [Lenis](https://lenis.darkroom.engineering/) (`@lenis/react`)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Fonts**: Geist & Inter via Google Fonts
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+Ensure you have [Node.js](https://nodejs.org/) (v18.0.0 or higher) and `npm` installed.
+
+### Installation
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/spark16x/portfolio.git
+   cd portfolio
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server**:
+   ```bash
+   npm run dev
+   ```
+   Open your browser at `http://localhost:3000`.
+
+---
+
+## 📦 Build & Deployment
+
+### Production Build
+To run TypeScript type checks and generate an optimized production bundle:
+
+```bash
+npm run build
+```
+
+### Preview Production Build
+To preview the compiled production build locally:
+
+```bash
+npm run preview
 ```
 
 ---
 
-## ⚡ Step 2: Your JS (simple + powerful)
+## 📂 Project Structure
 
-```js id="lq3p7r"
-$(document).ready(function () {
-  try {
-    $('body').ripples({
-      resolution: 512,
-      dropRadius: 20,
-      perturbance: 0.04,
-    });
-
-    // cursor-follow ripple
-    $(document).on('mousemove', function (e) {
-      $('body').ripples('drop', e.clientX, e.clientY, 10, 0.04);
-    });
-
-  } catch (e) {
-    console.warn('Ripples not supported');
-  }
-});
+```
+portfolio/
+├── public/
+│   └── assets/
+│       ├── images/        # Project images & avatar
+│       └── logo/          # Favicons & manifest
+├── src/
+│   ├── components/        # Reusable React components (.tsx)
+│   │   ├── About.tsx
+│   │   ├── AtmosphericBlurs.tsx
+│   │   ├── BackToTop.tsx
+│   │   ├── Clients.tsx
+│   │   ├── Contact.tsx
+│   │   ├── Footer.tsx
+│   │   ├── Hero.tsx
+│   │   ├── MagneticButton.tsx
+│   │   ├── Navbar.tsx
+│   │   ├── Skills.tsx
+│   │   ├── TiltCard.tsx
+│   │   └── Typewriter.tsx
+│   ├── App.tsx            # Main application shell with Lenis provider
+│   ├── main.tsx           # Application entry point
+│   ├── index.css          # Tailwind base & custom utility styles
+│   └── vite-env.d.ts      # TypeScript declarations
+├── index.html             # HTML entry shell with SEO meta tags
+├── package.json           # Scripts & dependencies
+├── tsconfig.json          # TypeScript configuration
+├── tailwind.config.js     # Extended Tailwind theme & tokens
+└── vite.config.ts         # Vite configuration
 ```
 
 ---
 
-## 🎨 Step 3: CSS (IMPORTANT for visibility)
+## 👤 Author
 
-Water effect only looks good if background is right:
-
-```css id="p2n8vz"
-body {
-  background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e') no-repeat center center/cover;
-  min-height: 100vh;
-}
-```
-
-👉 You can replace with:
-
-* dark gradient (for neon water)
-* glass UI background
-* your portfolio bg
+**Spark (Pratham Vig)**
+- **GitHub**: [@spark16x](https://github.com/spark16x)
+- **Instagram**: [@spark16.x](https://instagram.com/spark16.x)
+- **Email**: [spark2009971@gmail.com](mailto:spark2009971@gmail.com)
+- **Fiverr**: [Hire Me](https://www.fiverr.com/s/Q7Lj2de)
 
 ---
 
-## 🔥 Pro Tweaks (make it INSANE)
-
-### 1. Smooth + less spam
-
-```js
-let last = 0;
-$(document).on('mousemove', function (e) {
-  const now = Date.now();
-  if (now - last < 80) return;
-  last = now;
-
-  $('body').ripples('drop', e.clientX, e.clientY, 10, 0.04);
-});
-```
-
----
-
-### 2. Stronger water distortion
-
-```js
-perturbance: 0.08
-```
-
----
-
-### 3. Bigger ripples
-
-```js
-dropRadius: 30
-```
-
----
-
-## ⚠️ Important Notes
-
-* ❌ Won’t work properly on **mobile** (WebGL limitation)
-* ❌ Needs **background image or visible surface**
-* ✅ Works best on **hero section / full page**
-
----
-
-## ⚡ Result
-
-* Real **fluid distortion**
-* Cursor creates **water waves**
-* Looks like **liquid glass UI**
-
----
-
-If you want next level:
-
-* ripple only in **hero section**
-* ripple reacts to **scroll + clicks**
-* combine with **Anime.js parallax + glassmorphism**
-
-Say *“upgrade ripple to premium”* and I’ll stack it 🔥
+© 2024 Spark (Pratham Vig). Crafted with precision.
