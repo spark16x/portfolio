@@ -18,8 +18,8 @@ export default function Hero() {
     const unsubscribe = subscribeToDeviceOrientation(({ normX, normY }) => {
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-      const tiltX = (normY * -18).toFixed(2);
-      const tiltY = (normX * 18).toFixed(2);
+      const tiltX = (normX * -18).toFixed(2);
+      const tiltY = (normY * 18).toFixed(2);
 
       setProfileCardTilt({ rotateX: tiltX, rotateY: tiltY });
     });
@@ -51,7 +51,7 @@ export default function Hero() {
 
 
   return (
-    <section className="min-h-[819px] flex flex-col md:flex-row items-center justify-between py-xl gap-xl" id="home">
+    <section className="min-h-none md:min-h-[calc(100vh-80px)] flex flex-col md:flex-row items-center justify-between py-lg md:py-xl gap-lg md:gap-xl" id="home">
       <div className="flex-1 space-y-md">
         <p className="font-headline-md text-headline-md">
           Hi, It's <span className="font-bold">Spark</span>
@@ -104,7 +104,7 @@ export default function Hero() {
           id="profile-card"
           onMouseMove={handleMouseMoveCard}
           onMouseLeave={handleMouseLeaveCard}
-          className="relative w-72 h-72 md:w-88 md:h-88 group cursor-pointer"
+          className="relative w-64 h-64 sm:w-72 sm:h-72 md:w-88 md:h-88 aspect-square group cursor-pointer"
           style={{
             transformStyle: 'preserve-3d',
             transform: `rotateX(${profileCardTilt.rotateX}deg) rotateY(${profileCardTilt.rotateY}deg)`,
@@ -119,11 +119,11 @@ export default function Hero() {
 
           {/* Image Layer */}
           <div
-            className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl"
+            className="relative w-full h-full aspect-square rounded-3xl overflow-hidden shadow-2xl"
             style={{ transform: 'translateZ(25px)' }}
           >
             <img
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+              className="w-full h-full object-cover object-[50%_20%] grayscale hover:grayscale-0 transition-all duration-500"
               alt="Portrait of Pratham (Spark)"
               src="/assets/images/char.jpeg"
             />

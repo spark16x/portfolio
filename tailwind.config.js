@@ -63,6 +63,7 @@ export default {
         "full": "9999px"
       },
       spacing: {
+        "88": "22rem",
         "md": "1.5rem",
         "container-max": "1200px",
         "xs": "0.5rem",

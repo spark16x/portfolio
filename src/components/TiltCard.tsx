@@ -128,8 +128,8 @@ export default function TiltCard({
     const unsubscribe = subscribeToDeviceOrientation(({ normX, normY }) => {
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-      const tiltX = (normY * -maxTilt).toFixed(2);
-      const tiltY = (normX * maxTilt).toFixed(2);
+      const tiltX = (normX * -maxTilt).toFixed(2);
+      const tiltY = (normY * maxTilt).toFixed(2);
 
       setStyle({
         transform: `perspective(${perspective}px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateZ(8px)`,
