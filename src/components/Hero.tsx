@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Typewriter from './Typewriter';
 import MagneticButton from './MagneticButton';
 import { Code, Bot, Github, Instagram } from 'lucide-react';
+import { subscribeToDeviceOrientation, isMobileDevice } from './TiltCard';
 
 export interface CardTilt {
   rotateX: string | number;
@@ -11,8 +12,25 @@ export interface CardTilt {
 export default function Hero() {
   const [profileCardTilt, setProfileCardTilt] = useState<CardTilt>({ rotateX: 0, rotateY: 0 });
 
+  useEffect(() => {
+    if (!isMobileDevice()) return;
+
+    const unsubscribe = subscribeToDeviceOrientation(({ normX, normY }) => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const tiltX = (normY * -18).toFixed(2);
+      const tiltY = (normX * 18).toFixed(2);
+
+      setProfileCardTilt({ rotateX: tiltX, rotateY: tiltY });
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
   const handleMouseMoveCard = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (window.innerWidth < 768) return;
+    if (isMobileDevice() || window.innerWidth < 768) return;
     const card = e.currentTarget;
     const rect = card.getBoundingClientRect();
     const cardX = e.clientX - rect.left;
@@ -27,8 +45,10 @@ export default function Hero() {
   };
 
   const handleMouseLeaveCard = () => {
+    if (isMobileDevice()) return;
     setProfileCardTilt({ rotateX: 0, rotateY: 0 });
   };
+
 
   return (
     <section className="min-h-[819px] flex flex-col md:flex-row items-center justify-between py-xl gap-xl" id="home">
