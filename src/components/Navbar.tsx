@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { useLenis } from 'lenis/react';
-import MagneticButton from './MagneticButton';
-import { Menu, X } from 'lucide-react';
+import React, { useState } from "react";
+import { useLenis } from "lenis/react";
+import MagneticButton from "./MagneticButton";
+import { Menu, X } from "lucide-react";
 
 export interface NavItem {
   label: string;
@@ -9,11 +9,11 @@ export interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { label: 'Home', href: '#home' },
-  { label: 'About', href: '#about' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Clients', href: '#clients' },
-  { label: 'Contact', href: '#contact' }
+  { label: "Home", href: "#home" },
+  { label: "About", href: "#about" },
+  { label: "Skills", href: "#skills" },
+  { label: "Clients", href: "#clients" },
+  { label: "Contact", href: "#contact" },
 ];
 
 export interface NavbarProps {
@@ -24,7 +24,10 @@ export default function Navbar({ activeSection }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const lenis = useLenis();
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string,
+  ) => {
     e.preventDefault();
     setMobileMenuOpen(false);
 
@@ -34,8 +37,9 @@ export default function Navbar({ activeSection }: NavbarProps) {
       if (lenis) {
         lenis.scrollTo(target, { offset: navOffset });
       } else {
-        const targetPosition = target.getBoundingClientRect().top + window.scrollY + navOffset;
-        window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+        const targetPosition =
+          target.getBoundingClientRect().top + window.scrollY + navOffset;
+        window.scrollTo({ top: targetPosition, behavior: "smooth" });
       }
     }
   };
@@ -43,7 +47,10 @@ export default function Navbar({ activeSection }: NavbarProps) {
   return (
     <nav className="sticky top-0 w-full z-50 glass border-b border-outline-variant/30">
       <div className="flex justify-between items-center px-gutter py-sm max-w-container-max mx-auto">
-        <div id="nav-logo" className="font-headline-md text-headline-md font-bold tracking-tighter text-on-surface">
+        <div
+          id="nav-logo"
+          className="font-headline-md text-headline-md font-bold tracking-tighter text-on-surface"
+        >
           Spark.
         </div>
 
@@ -58,8 +65,8 @@ export default function Navbar({ activeSection }: NavbarProps) {
                 onClick={(e) => handleNavClick(e, item.href)}
                 className={`font-body-md text-body-md transition-all nav-link ${
                   isActive
-                    ? 'text-primary font-bold border-b-2 border-primary pb-1'
-                    : 'text-secondary hover:text-primary'
+                    ? "text-primary font-bold border-b-2 border-primary pb-1"
+                    : "text-secondary hover:text-primary"
                 }`}
               >
                 {item.label}
@@ -85,7 +92,11 @@ export default function Navbar({ activeSection }: NavbarProps) {
             className="md:hidden p-2 text-primary hover:bg-surface-container rounded-lg transition-colors"
             aria-label="Toggle Navigation Menu"
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
           </button>
         </div>
       </div>
@@ -102,8 +113,8 @@ export default function Navbar({ activeSection }: NavbarProps) {
                 onClick={(e) => handleNavClick(e, item.href)}
                 className={`font-body-md text-body-md transition-all py-1 ${
                   isActive
-                    ? 'text-primary font-bold pl-2 border-l-2 border-primary'
-                    : 'text-secondary hover:text-primary'
+                    ? "text-primary font-bold pl-2 border-l-2 border-primary"
+                    : "text-secondary hover:text-primary"
                 }`}
               >
                 {item.label}

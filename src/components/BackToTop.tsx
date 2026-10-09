@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useLenis } from 'lenis/react';
-import { ArrowUp } from 'lucide-react';
-import MagneticButton from './MagneticButton';
+import React, { useState, useEffect } from "react";
+import { useLenis } from "lenis/react";
+import { ArrowUp } from "lucide-react";
+import MagneticButton from "./MagneticButton";
 
 export default function BackToTop() {
   const [visible, setVisible] = useState<boolean>(false);
@@ -16,22 +16,24 @@ export default function BackToTop() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToTop = () => {
     if (lenis) {
       lenis.scrollTo(0);
     } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
   return (
     <div
       className={`fixed bottom-lg right-lg z-[60] transition-all duration-400 ${
-        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-24 pointer-events-none'
+        visible
+          ? "opacity-100 translate-y-0"
+          : "opacity-0 translate-y-24 pointer-events-none"
       }`}
     >
       <MagneticButton

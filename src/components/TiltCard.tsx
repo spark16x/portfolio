@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from "react";
 
 export interface TiltCardProps {
   children: React.ReactNode;
@@ -16,21 +16,27 @@ let initialGamma: number | null = null;
 let permissionRequested = false;
 
 export const isMobileDevice = (): boolean => {
-  if (typeof window === 'undefined') return false;
-  const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-  const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  if (typeof window === "undefined") return false;
+  const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  const isMobileUA =
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent,
+    );
   return (isMobileUA || isTouch) && window.innerWidth <= 1024;
 };
 
 function handleDeviceOrientation(e: DeviceOrientationEvent) {
-  let beta = e.beta;   // Pitch [-180, 180]
+  let beta = e.beta; // Pitch [-180, 180]
   let gamma = e.gamma; // Roll [-90, 90]
 
   if (beta === null || beta === undefined) beta = 0;
   if (gamma === null || gamma === undefined) gamma = 0;
 
   // Handle landscape rotation
-  if (typeof window !== 'undefined' && window.matchMedia('(orientation: landscape)').matches) {
+  if (
+    typeof window !== "undefined" &&
+    window.matchMedia("(orientation: landscape)").matches
+  ) {
     const temp = beta;
     beta = gamma;
     gamma = -temp;
@@ -57,18 +63,22 @@ function handleDeviceOrientation(e: DeviceOrientationEvent) {
 }
 
 function initDeviceOrientationListener() {
-  if (typeof window === 'undefined' || isOrientationListening) return;
+  if (typeof window === "undefined" || isOrientationListening) return;
   isOrientationListening = true;
 
   if (window.DeviceOrientationEvent) {
-    window.addEventListener('deviceorientation', handleDeviceOrientation, true);
-    window.addEventListener('deviceorientationabsolute', handleDeviceOrientation, true);
+    window.addEventListener("deviceorientation", handleDeviceOrientation, true);
+    window.addEventListener(
+      "deviceorientationabsolute",
+      handleDeviceOrientation,
+      true,
+    );
   }
 
   // iOS 13+ permission handling
   if (
-    typeof DeviceOrientationEvent !== 'undefined' &&
-    typeof (DeviceOrientationEvent as any).requestPermission === 'function' &&
+    typeof DeviceOrientationEvent !== "undefined" &&
+    typeof (DeviceOrientationEvent as any).requestPermission === "function" &&
     !permissionRequested
   ) {
     const requestPermissions = () => {
@@ -76,27 +86,35 @@ function initDeviceOrientationListener() {
       (DeviceOrientationEvent as any)
         .requestPermission()
         .then((state: string) => {
-          if (state === 'granted') {
+          if (state === "granted") {
             // Permission granted; orientation listener is active
           }
         })
         .catch(() => {});
     };
-    window.addEventListener('touchstart', requestPermissions, { once: true });
-    window.addEventListener('click', requestPermissions, { once: true });
+    window.addEventListener("touchstart", requestPermissions, { once: true });
+    window.addEventListener("click", requestPermissions, { once: true });
   }
 }
 
 function removeDeviceOrientationListener() {
-  if (typeof window === 'undefined' || !isOrientationListening) return;
+  if (typeof window === "undefined" || !isOrientationListening) return;
   if (subscribers.size > 0) return;
 
   isOrientationListening = false;
   initialBeta = null;
   initialGamma = null;
   if (window.DeviceOrientationEvent) {
-    window.removeEventListener('deviceorientation', handleDeviceOrientation, true);
-    window.removeEventListener('deviceorientationabsolute', handleDeviceOrientation, true);
+    window.removeEventListener(
+      "deviceorientation",
+      handleDeviceOrientation,
+      true,
+    );
+    window.removeEventListener(
+      "deviceorientationabsolute",
+      handleDeviceOrientation,
+      true,
+    );
   }
 }
 
@@ -111,30 +129,32 @@ export function subscribeToDeviceOrientation(callback: OrientationSubscriber) {
 
 export default function TiltCard({
   children,
-  className = '',
+  className = "",
   maxTilt = 10,
-  perspective = 1000
+  perspective = 1000,
 }: TiltCardProps) {
   const cardRef = useRef<HTMLDivElement | null>(null);
   const [style, setStyle] = useState<React.CSSProperties>({
     transform: `perspective(${perspective}px) rotateX(0deg) rotateY(0deg) translateZ(0px)`,
-    transition: 'transform 0.15s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s ease',
-    transformStyle: 'preserve-3d'
+    transition:
+      "transform 0.15s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s ease",
+    transformStyle: "preserve-3d",
   });
 
   useEffect(() => {
     if (!isMobileDevice()) return;
 
     const unsubscribe = subscribeToDeviceOrientation(({ normX, normY }) => {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
       const tiltX = (normX * -maxTilt).toFixed(2);
       const tiltY = (normY * maxTilt).toFixed(2);
 
       setStyle({
         transform: `perspective(${perspective}px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateZ(8px)`,
-        transition: 'transform 0.15s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s ease',
-        transformStyle: 'preserve-3d'
+        transition:
+          "transform 0.15s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s ease",
+        transformStyle: "preserve-3d",
       });
     });
 
@@ -145,7 +165,7 @@ export default function TiltCard({
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (isMobileDevice()) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (!cardRef.current) return;
 
     const rect = cardRef.current.getBoundingClientRect();
@@ -159,8 +179,9 @@ export default function TiltCard({
 
     setStyle({
       transform: `perspective(${perspective}px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateZ(12px)`,
-      transition: 'transform 0.15s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s ease',
-      transformStyle: 'preserve-3d'
+      transition:
+        "transform 0.15s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s ease",
+      transformStyle: "preserve-3d",
     });
   };
 
@@ -168,8 +189,8 @@ export default function TiltCard({
     if (isMobileDevice()) return;
     setStyle({
       transform: `perspective(${perspective}px) rotateX(0deg) rotateY(0deg) translateZ(0px)`,
-      transition: 'transform 0.5s ease',
-      transformStyle: 'preserve-3d'
+      transition: "transform 0.5s ease",
+      transformStyle: "preserve-3d",
     });
   };
 
@@ -185,4 +206,3 @@ export default function TiltCard({
     </div>
   );
 }
-

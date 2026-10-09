@@ -1,12 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState } from "react";
 
 export interface MagneticButtonProps extends React.HTMLAttributes<HTMLElement> {
   children: React.ReactNode;
   href?: string;
   onClick?: (e: React.MouseEvent<HTMLElement>) => void;
   className?: string;
-  variant?: 'primary' | 'inverse';
-  as?: 'a' | 'button';
+  variant?: "primary" | "inverse";
+  as?: "a" | "button";
   ariaLabel?: string;
   target?: string;
   rel?: string;
@@ -16,9 +16,9 @@ export default function MagneticButton({
   children,
   href,
   onClick,
-  className = '',
-  variant = 'primary',
-  as = 'a',
+  className = "",
+  variant = "primary",
+  as = "a",
   ariaLabel,
   target,
   rel,
@@ -26,10 +26,10 @@ export default function MagneticButton({
 }: MagneticButtonProps) {
   const btnRef = useRef<HTMLAnchorElement | HTMLButtonElement | null>(null);
   const bgRef = useRef<HTMLSpanElement | null>(null);
-  const [transform, setTransform] = useState<string>('translate(0px, 0px)');
+  const [transform, setTransform] = useState<string>("translate(0px, 0px)");
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (!btnRef.current) return;
 
     const rect = btnRef.current.getBoundingClientRect();
@@ -55,13 +55,14 @@ export default function MagneticButton({
   };
 
   const handleMouseLeave = () => {
-    setTransform('translate(0px, 0px)');
+    setTransform("translate(0px, 0px)");
   };
 
-  const variantClass = variant === 'inverse' ? 'btn-fill-inverse' : 'btn-fill-primary';
+  const variantClass =
+    variant === "inverse" ? "btn-fill-inverse" : "btn-fill-primary";
   const combinedClassName = `magnetic-btn btn-fill ${variantClass} ${className}`;
 
-  if (as === 'button' || !href) {
+  if (as === "button" || !href) {
     return (
       <button
         ref={btnRef as React.RefObject<HTMLButtonElement>}

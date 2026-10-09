@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 export default function AtmosphericBlurs() {
   const [mobileMotionActive, setMobileMotionActive] = useState<boolean>(false);
@@ -10,13 +10,21 @@ export default function AtmosphericBlurs() {
       }
     };
 
-    if (typeof window !== 'undefined' && window.DeviceOrientationEvent && ('ontouchstart' in window)) {
-      window.addEventListener('deviceorientation', handleOrientation, true);
+    if (
+      typeof window !== "undefined" &&
+      window.DeviceOrientationEvent &&
+      "ontouchstart" in window
+    ) {
+      window.addEventListener("deviceorientation", handleOrientation, true);
     }
 
     return () => {
-      if (typeof window !== 'undefined' && window.DeviceOrientationEvent) {
-        window.removeEventListener('deviceorientation', handleOrientation, true);
+      if (typeof window !== "undefined" && window.DeviceOrientationEvent) {
+        window.removeEventListener(
+          "deviceorientation",
+          handleOrientation,
+          true,
+        );
       }
     };
   }, []);
@@ -30,7 +38,7 @@ export default function AtmosphericBlurs() {
       />
       <div
         className="fixed bottom-[10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-tertiary-fixed/30 blur-[100px] -z-10 animate-float"
-        style={{ animationDelay: '-6s' }}
+        style={{ animationDelay: "-6s" }}
         data-parallax-speed="30"
       />
 

@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const phrases: string[] = [
-  'Creative Web Developer',
-  'Frontend Builder',
-  'Backend Explorer',
-  'App Builder'
+  "Creative Web Developer",
+  "Frontend Builder",
+  "Backend Explorer",
+  "App Builder",
 ];
 
 export interface TypewriterProps {
   className?: string;
 }
 
-export default function Typewriter({ className = '' }: TypewriterProps) {
+export default function Typewriter({ className = "" }: TypewriterProps) {
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState<number>(0);
-  const [text, setText] = useState<string>('');
+  const [text, setText] = useState<string>("");
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
   useEffect(() => {
@@ -46,8 +46,10 @@ export default function Typewriter({ className = '' }: TypewriterProps) {
   }, [text, isDeleting, currentPhraseIndex]);
 
   return (
-    <span className={`bg-primary text-on-primary px-2 inline-block typing cursor-blink ${className}`}>
-      {text || '\u00A0'}
+    <span
+      className={`bg-primary text-on-primary px-2 inline-block typing cursor-blink ${className}`}
+    >
+      {text || "\u00A0"}
     </span>
   );
 }
