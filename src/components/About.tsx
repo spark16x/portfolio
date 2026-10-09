@@ -1,8 +1,13 @@
 import React from 'react';
 import TiltCard from './TiltCard';
 import { Rocket } from 'lucide-react';
+import TechText from './TechText';
 
 export default function About() {
+  const aboutText = `Hey, I’m Pratham 👋 — a Class 12 (Commerce) student and a passionate developer. I love creating futuristic web experiences and currently I’m building my own JARVIS-inspired AI assistant.
+
+I enjoy experimenting, learning quickly, and shipping ideas that feel both useful and creative. I believe that great software is not just about the code, but about solving real-world problems through thoughtful design and engineering excellence.`;
+
   return (
     <section className="py-xl" id="about">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-xl items-center">
@@ -11,11 +16,8 @@ export default function About() {
             About <span className="text-secondary">me</span>
           </h2>
           <h3 className="font-headline-md text-headline-md text-secondary">Full-stack developer</h3>
-          <p className="font-body-md text-body-md text-secondary mt-4">
-            Hey, I’m Pratham 👋 — a Class 12 (Commerce) student and a passionate developer. I love creating futuristic web experiences and currently I’m building my own JARVIS-inspired AI assistant.
-            <br />
-            <br />
-            I enjoy experimenting, learning quickly, and shipping ideas that feel both useful and creative. I believe that great software is not just about the code, but about solving real-world problems through thoughtful design and engineering excellence.
+          <p className="font-body-md text-body-md text-secondary mt-4 whitespace-pre-wrap">
+            <TechText text={aboutText} />
           </p>
         </div>
 
