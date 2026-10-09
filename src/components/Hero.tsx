@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import TechText from './TechText';
 import Typewriter from './Typewriter';
 import MagneticButton from './MagneticButton';
 import { Code, Bot, Github, Instagram } from 'lucide-react';
@@ -56,10 +57,22 @@ export default function Hero() {
         <p className="font-headline-md text-headline-md">
           Hi, It's <span className="font-bold">Spark</span>
         </p>
-        <h1 className="font-display-xl-mobile md:font-display-xl text-display-xl-mobile md:text-display-xl max-w-2xl leading-tight">
+        <div className="font-display-xl-mobile md:font-display-xl text-display-xl-mobile md:text-display-xl max-w-2xl leading-tight">
           I'm a <br />
-          <Typewriter />
-        </h1>
+          <div style={{ width: '100%', height: '120px', position: 'relative' }}>
+            <TechText
+              text="React Bits"
+              fontWeight={600}
+              fontSize={150}
+              reveal="letter"
+              dashLength={4}
+              dashGap={2}
+              specks={15}
+              color="#000000"
+              accentColor="#000000"
+            />
+          </div>
+        </div>
         <p className="font-body-lg text-body-lg text-secondary max-w-xl">
           A student and web developer building modern, experimental, and AI-powered experiences. I enjoy experimenting, learning quickly, and shipping ideas that feel both useful and creative.
         </p>
