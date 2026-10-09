@@ -1,3 +1,4 @@
+import TechText from './TechText';
 import React from 'react';
 import TiltCard from './TiltCard';
 import { Rocket } from 'lucide-react';
@@ -10,6 +11,19 @@ export default function About() {
           <h2 className="font-headline-lg text-headline-lg">
             About <span className="text-secondary">me</span>
           </h2>
+          <div className="my-2" style={{ width: '100%', height: '80px', position: 'relative' }}>
+            <TechText
+              text="Pratham"
+              fontWeight={600}
+              fontSize={70}
+              reveal="letter"
+              dashLength={4}
+              dashGap={2}
+              specks={15}
+              color="#000000"
+              accentColor="#000000"
+            />
+          </div>
           <h3 className="font-headline-md text-headline-md text-secondary">Full-stack developer</h3>
           <p className="font-body-md text-body-md text-secondary mt-4">
             Hey, I’m Pratham 👋 — a Class 12 (Commerce) student and a passionate developer. I love creating futuristic web experiences and currently I’m building my own JARVIS-inspired AI assistant.
