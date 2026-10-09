@@ -1,6 +1,6 @@
-import React from 'react';
-import TiltCard from './TiltCard';
-import { Code, Server, Terminal } from 'lucide-react';
+import React from "react";
+import TiltCard from "./TiltCard";
+import { Code, Server, Terminal } from "lucide-react";
 
 export interface Skill {
   name: string;
@@ -8,26 +8,26 @@ export interface Skill {
 }
 
 const frontendSkills: Skill[] = [
-  { name: 'React', level: '92%' },
-  { name: 'Next.js', level: '88%' },
-  { name: 'Tailwind CSS', level: '90%' },
-  { name: 'Shadcn UI', level: '60%' }
+  { name: "React", level: "92%" },
+  { name: "Next.js", level: "88%" },
+  { name: "Tailwind CSS", level: "90%" },
+  { name: "Shadcn UI", level: "60%" },
 ];
 
 const backendSkills: Skill[] = [
-  { name: 'Node.js', level: '85%' },
-  { name: 'Express', level: '82%' },
-  { name: 'MongoDB', level: '78%' },
-  { name: 'Bun', level: '25%' }
+  { name: "Node.js", level: "85%" },
+  { name: "Express", level: "82%" },
+  { name: "MongoDB", level: "78%" },
+  { name: "Bun", level: "25%" },
 ];
 
 const tools: string[] = [
-  'Git/GitHub',
-  'Firebase',
-  'AI APIs',
-  'Anime.js',
-  'Vercel',
-  'Performance Tuning'
+  "Git/GitHub",
+  "Firebase",
+  "AI APIs",
+  "Anime.js",
+  "Vercel",
+  "Performance Tuning",
 ];
 
 export default function Skills() {
@@ -35,7 +35,9 @@ export default function Skills() {
     <section className="py-xl" id="skills">
       <div className="text-center mb-xl">
         <h2 className="font-headline-lg text-headline-lg">Creative Skills</h2>
-        <p className="text-secondary font-body-md">The tools and technologies I use to bring ideas to life.</p>
+        <p className="text-secondary font-body-md">
+          The tools and technologies I use to bring ideas to life.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-md">
@@ -86,7 +88,9 @@ export default function Skills() {
         {/* Tools & Stack */}
         <TiltCard className="bg-white p-lg rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors shadow-sm">
           <Terminal className="text-primary mb-sm w-8 h-8" />
-          <h3 className="font-headline-md text-headline-md mb-md">Tools & Creative Stack</h3>
+          <h3 className="font-headline-md text-headline-md mb-md">
+            Tools & Creative Stack
+          </h3>
           <div className="flex flex-wrap gap-xs">
             {tools.map((tool) => (
               <span

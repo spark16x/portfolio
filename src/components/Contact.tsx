@@ -1,5 +1,5 @@
-import React from 'react';
-import MagneticButton from './MagneticButton';
+import React from "react";
+import MagneticButton from "./MagneticButton";
 
 export default function Contact() {
   return (
@@ -9,7 +9,8 @@ export default function Contact() {
           Let's build something <span className="text-secondary">amazing</span>
         </h2>
         <p className="text-secondary font-body-lg mb-xl">
-          Have an idea or project? I’d love to collaborate and turn it into a powerful digital experience.
+          Have an idea or project? I’d love to collaborate and turn it into a
+          powerful digital experience.
         </p>
 
         <div className="flex flex-wrap justify-center gap-md">

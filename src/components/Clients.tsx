@@ -1,13 +1,17 @@
-import React from 'react';
-import TiltCard from './TiltCard';
-import { ArrowRight, Share2 } from 'lucide-react';
+import React from "react";
+import TiltCard from "./TiltCard";
+import { ArrowRight, Share2 } from "lucide-react";
 
 export default function Clients() {
   return (
     <section className="py-xl" id="clients">
       <div className="text-center mb-xl">
-        <h2 className="font-headline-lg text-headline-lg">Clients & Products</h2>
-        <p className="text-secondary font-body-md">SaaS products I've launched and brands I've helped grow.</p>
+        <h2 className="font-headline-lg text-headline-lg">
+          Clients & Products
+        </h2>
+        <p className="text-secondary font-body-md">
+          SaaS products I've launched and brands I've helped grow.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-md max-w-4xl mx-auto">
@@ -33,7 +37,9 @@ export default function Clients() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="font-headline-md text-headline-md leading-none text-primary">AYD Sports Academy</h3>
+                  <h3 className="font-headline-md text-headline-md leading-none text-primary">
+                    AYD Sports Academy
+                  </h3>
                   <span className="text-xs text-[#ff6b00] font-medium tracking-wider uppercase font-code">
                     Sports & Fitness
                   </span>
@@ -44,7 +50,9 @@ export default function Clients() {
               </span>
             </div>
             <p className="font-body-md text-body-md text-secondary mb-md">
-              Designed and developed a premium, responsive landing page featuring class registration, membership management, and interactive program schedules.
+              Designed and developed a premium, responsive landing page
+              featuring class registration, membership management, and
+              interactive program schedules.
             </p>
             <div className="flex flex-wrap gap-xs mb-lg">
               <span className="bg-surface-container text-secondary px-sm py-1 rounded-full text-label-sm font-label-sm">
@@ -77,7 +85,9 @@ export default function Clients() {
                   <Share2 className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="font-headline-md text-headline-md leading-none text-primary">Arcfuse</h3>
+                  <h3 className="font-headline-md text-headline-md leading-none text-primary">
+                    Arcfuse
+                  </h3>
                   <span className="text-xs text-[#6366f1] font-medium tracking-wider uppercase font-code">
                     AI & Social Media
                   </span>
@@ -88,7 +98,9 @@ export default function Clients() {
               </span>
             </div>
             <p className="font-body-md text-body-md text-secondary mb-md">
-              Built and launched Arcfuse, an open-source standard for multi-platform social media that integrates post scheduling, unified messaging, and analytics.
+              Built and launched Arcfuse, an open-source standard for
+              multi-platform social media that integrates post scheduling,
+              unified messaging, and analytics.
             </p>
             <div className="flex flex-wrap gap-xs mb-lg">
               <span className="bg-surface-container text-secondary px-sm py-1 rounded-full text-label-sm font-label-sm">
