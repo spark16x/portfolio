@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ReactLenis, useLenis } from "lenis/react";
 import AtmosphericBlurs from "./components/AtmosphericBlurs";
 import Navbar from "./components/Navbar";
@@ -13,6 +13,32 @@ import ClickSpark from "./components/ClickSpark";
 
 export default function App() {
   const [activeSection, setActiveSection] = useState<string>("home");
+
+  const [theme, setTheme] = useState("light");
+
+  useEffect(() => {
+    // Check if the html or body element has a dark class, or respect system preference
+    const isDark =
+      document.documentElement.classList.contains("dark") ||
+      document.body.classList.contains("dark");
+    setTheme(isDark ? "dark" : "light");
+
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === "class") {
+          const isDarkNow =
+            document.documentElement.classList.contains("dark") ||
+            document.body.classList.contains("dark");
+          setTheme(isDarkNow ? "dark" : "light");
+        }
+      });
+    });
+
+    observer.observe(document.documentElement, { attributes: true });
+    observer.observe(document.body, { attributes: true });
+
+    return () => observer.disconnect();
+  }, []);
 
   // Track scroll position to update active section in Navbar
   useLenis(({ scroll }) => {
@@ -48,7 +74,7 @@ export default function App() {
       }}
     >
       <ClickSpark
-        sparkColor="#fff"
+        sparkColor={theme === "dark" ? "#fff" : "#000"}
         sparkSize={10}
         sparkRadius={15}
         sparkCount={8}
