@@ -196,7 +196,7 @@ const TextLoop: React.FC<TextLoopProps> = ({
     <div ref={rootRef} className={`text-loop ${className}`.trim()} style={style}>
       <svg
         className="text-loop-svg"
-        viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
+        viewBox={shape === 'line' ? `0 ${CY - Math.max(ribbonWidth, fontSize)} ${VIEW_W} ${Math.max(ribbonWidth, fontSize) * 2}` : `0 0 ${VIEW_W} ${VIEW_H}`}
         preserveAspectRatio="xMidYMid meet"
         role="img"
         aria-label={text}

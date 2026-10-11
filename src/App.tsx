@@ -86,7 +86,7 @@ export default function App() {
           <Navbar activeSection={activeSection} />
           <main className="max-w-container-max mx-auto px-gutter">
             <Hero />
-            <div className="py-12">
+            <div className="w-screen relative left-1/2 -translate-x-1/2 overflow-hidden">
               <TextLoop
                 text="spark"
                 shape="line"
