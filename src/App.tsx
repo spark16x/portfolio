@@ -4,6 +4,7 @@ import AtmosphericBlurs from "./components/AtmosphericBlurs";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
+import TextLoop from "./components/TextLoop";
 import Skills from "./components/Skills";
 import Clients from "./components/Clients";
 import Contact from "./components/Contact";
@@ -85,6 +86,25 @@ export default function App() {
           <Navbar activeSection={activeSection} />
           <main className="max-w-container-max mx-auto px-gutter">
             <Hero />
+            <div className="py-12">
+              <TextLoop
+                text="spark"
+                shape="line"
+                speed={90}
+                direction="forward"
+                separator="✦"
+                curviness={90}
+                fontSize={46}
+                fontWeight={800}
+                letterSpacing={2}
+                uppercase
+                color={theme === 'dark' ? '#ffffff' : '#000000'}
+                ribbon
+                ribbonColor={theme === 'dark' ? '#5227FF' : '#E8E2FF'}
+                ribbonWidth={86}
+                pauseOnHover
+              />
+            </div>
             <About />
             <Skills />
             <Clients />
