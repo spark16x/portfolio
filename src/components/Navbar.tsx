@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useLenis } from "lenis/react";
 import MagneticButton from "./MagneticButton";
-import { Menu, X } from "lucide-react";
+import StaggeredMenu from "./StaggeredMenu";
 
 export interface NavItem {
   label: string;
@@ -21,7 +21,6 @@ export interface NavbarProps {
 }
 
 export default function Navbar({ activeSection }: NavbarProps) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const lenis = useLenis();
 
   const handleNavClick = (
@@ -29,7 +28,6 @@ export default function Navbar({ activeSection }: NavbarProps) {
     href: string,
   ) => {
     e.preventDefault();
-    setMobileMenuOpen(false);
 
     const target = document.querySelector(href) as HTMLElement | null;
     if (target) {
@@ -86,43 +84,31 @@ export default function Navbar({ activeSection }: NavbarProps) {
             <span>Hire Me</span>
           </MagneticButton>
 
-          {/* Mobile Menu Toggle Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-primary hover:bg-surface-container rounded-lg transition-colors"
-            aria-label="Toggle Navigation Menu"
-          >
-            {mobileMenuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
-          </button>
+          {/* Mobile Menu (StaggeredMenu) */}
+          <div className="md:hidden w-16 h-8 flex items-center justify-end">
+            <StaggeredMenu
+              position="right"
+              logoUrl=""
+              items={navItems.map(item => ({
+                label: item.label,
+                link: item.href,
+                onClick: (e: React.MouseEvent<HTMLAnchorElement>) => handleNavClick(e, item.href)
+              }))}
+              socialItems={[
+                { label: 'Twitter', link: 'https://twitter.com' },
+                { label: 'GitHub', link: 'https://github.com' },
+                { label: 'LinkedIn', link: 'https://linkedin.com' }
+              ]}
+              menuButtonColor="currentColor"
+              openMenuButtonColor="#1a1a1a"
+              accentColor="#5227FF"
+              colors={['#B497CF', '#5227FF']}
+            />
+          </div>
         </div>
       </div>
 
-      {/* Mobile Dropdown Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden glass border-t border-outline-variant/20 px-gutter py-md flex flex-col gap-md animate-in slide-in-from-top duration-200">
-          {navItems.map((item) => {
-            const isActive = activeSection === item.href.substring(1);
-            return (
-              <a
-                key={item.label}
-                href={item.href}
-                onClick={(e) => handleNavClick(e, item.href)}
-                className={`font-body-md text-body-md transition-all py-1 ${
-                  isActive
-                    ? "text-primary font-bold pl-2 border-l-2 border-primary"
-                    : "text-secondary hover:text-primary"
-                }`}
-              >
-                {item.label}
-              </a>
-            );
-          })}
-        </div>
-      )}
+
     </nav>
   );
 }
