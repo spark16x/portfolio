@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 
 const TOTAL_FRAMES = 100;
 const FPS = 10;
-const FRAME_DURATION = 1000 / FPS; // 100ms
+const FRAME_DURATION = 1000 / FPS; // 100ms per frame
 const TOTAL_SEQUENCE_DURATION = TOTAL_FRAMES * FRAME_DURATION; // 10000ms = 10s
 const STORAGE_KEY = "has_seen_spark_splash";
 
@@ -15,19 +15,17 @@ export default function SplashScreen() {
     }
   });
 
-  const [isFadingOut, setIsFadingOut] = useState<boolean>(false);
-  const [progress, setProgress] = useState<number>(0);
-  const [wordmarkVisible, setWordmarkVisible] = useState<boolean>(false);
+  const [isHiding, setIsHiding] = useState<boolean>(false);
+  const [frameOpacity, setFrameOpacity] = useState<number>(0);
 
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const isDismissedRef = useRef<boolean>(false);
+  const imgRef = useRef<HTMLImageElement | null>(null);
+  const progressBarRef = useRef<HTMLDivElement | null>(null);
+  const isFinishedRef = useRef<boolean>(false);
   const rafIdRef = useRef<number | null>(null);
   const imagesRef = useRef<(HTMLImageElement | null)[]>([]);
-  const lastDrawnFrameRef = useRef<number>(-1);
 
-  const getFramePath = (index: number) => {
-    const frameNum = String(index + 1).padStart(3, "0");
-    return `/Frames/frame_${frameNum}.png`;
+  const getFramePath = (number: number) => {
+    return `/Frames/frame_${String(number).padStart(3, "0")}.png`;
   };
 
   const markSessionStorage = () => {
@@ -38,9 +36,9 @@ export default function SplashScreen() {
     }
   };
 
-  const dismissSplash = useCallback(() => {
-    if (isDismissedRef.current) return;
-    isDismissedRef.current = true;
+  const finishSplash = useCallback(() => {
+    if (isFinishedRef.current) return;
+    isFinishedRef.current = true;
 
     if (rafIdRef.current !== null) {
       cancelAnimationFrame(rafIdRef.current);
@@ -48,22 +46,22 @@ export default function SplashScreen() {
     }
 
     markSessionStorage();
-    setIsFadingOut(true);
+    setIsHiding(true);
 
     setTimeout(() => {
       document.body.style.overflow = "";
       setIsVisible(false);
-    }, 700);
+    }, 900);
   }, []);
 
-  // Keyboard skip listener
+  // Keyboard skip handler
   useEffect(() => {
     if (!isVisible) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" || e.key === "Enter" || e.key === " ") {
         e.preventDefault();
-        dismissSplash();
+        finishSplash();
       }
     };
 
@@ -71,211 +69,183 @@ export default function SplashScreen() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isVisible, dismissSplash]);
+  }, [isVisible, finishSplash]);
 
-  // Preloading & Animation Lifecycle
+  // Preloading & Animation lifecycle
   useEffect(() => {
     if (!isVisible) return;
 
-    // Lock body scroll while splash is active
+    // Lock body scroll during splash display
     document.body.style.overflow = "hidden";
 
-    // Reduced motion check
-    const prefersReducedMotion = window.matchMedia(
+    const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    if (prefersReducedMotion) {
-      setWordmarkVisible(true);
-      const timer = setTimeout(() => {
-        dismissSplash();
-      }, 1200);
-      return () => clearTimeout(timer);
+    if (reducedMotion) {
+      finishSplash();
+      return;
     }
 
-    // Wordmark reveal animation trigger
-    const wordmarkTimer = setTimeout(() => {
-      setWordmarkVisible(true);
-    }, 100);
-
-    // Initialize image cache array
+    // Preload frames array
     imagesRef.current = new Array(TOTAL_FRAMES).fill(null);
 
-    // Progressive image preloader
     const loadFrame = (index: number): Promise<HTMLImageElement> => {
-      return new Promise((resolve, reject) => {
-        if (imagesRef.current[index]) {
-          return resolve(imagesRef.current[index]!);
-        }
+      return new Promise((resolve) => {
         const img = new Image();
-        img.src = getFramePath(index);
+        img.src = getFramePath(index + 1);
         img.onload = () => {
           imagesRef.current[index] = img;
           resolve(img);
         };
         img.onerror = () => {
-          console.warn(`Failed to load frame ${index + 1}`);
-          reject(new Error(`Failed to load frame ${index + 1}`));
+          resolve(img);
         };
       });
     };
 
-    // Preload first batch (first 10 frames), then load rest in background
-    const initialBatchSize = 10;
-    const preloadFirstBatch = async () => {
-      const promises = [];
-      for (let i = 0; i < Math.min(initialBatchSize, TOTAL_FRAMES); i++) {
-        promises.push(loadFrame(i).catch(() => null));
+    // Preload initial frames batch first, then rest
+    const preloadFrames = async () => {
+      const firstBatch = [];
+      for (let i = 0; i < Math.min(10, TOTAL_FRAMES); i++) {
+        firstBatch.push(loadFrame(i));
       }
-      await Promise.all(promises);
+      await Promise.all(firstBatch);
 
-      // Load rest progressively in background
-      for (let i = initialBatchSize; i < TOTAL_FRAMES; i++) {
-        if (isDismissedRef.current) break;
-        loadFrame(i).catch(() => null);
-      }
-    };
-
-    preloadFirstBatch();
-
-    // Canvas drawing helper
-    const drawFrame = (frameIndex: number) => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
-
-      // Find best available frame image (current or last available)
-      let img = imagesRef.current[frameIndex];
-      if (!img) {
-        for (let i = frameIndex - 1; i >= 0; i--) {
-          if (imagesRef.current[i]) {
-            img = imagesRef.current[i];
-            break;
-          }
-        }
+      if (imgRef.current && imagesRef.current[0]) {
+        imgRef.current.src = imagesRef.current[0].src;
+        setFrameOpacity(1);
       }
 
-      if (img && img.complete) {
-        if (canvas.width !== img.naturalWidth || canvas.height !== img.naturalHeight) {
-          canvas.width = img.naturalWidth || 800;
-          canvas.height = img.naturalHeight || 450;
-        }
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        lastDrawnFrameRef.current = frameIndex;
+      for (let i = 10; i < TOTAL_FRAMES; i++) {
+        if (isFinishedRef.current) break;
+        loadFrame(i);
       }
     };
 
-    // Animation Loop using requestAnimationFrame & elapsed time
+    preloadFrames();
+
+    // Playback loop
     let startTime: number | null = null;
+    let currentFrameIndex = 0;
 
     const animate = (timestamp: number) => {
-      if (isDismissedRef.current) return;
+      if (isFinishedRef.current) return;
 
-      if (startTime === null) {
-        startTime = timestamp;
-      }
+      if (!startTime) startTime = timestamp;
 
       const elapsed = timestamp - startTime;
-      const calculatedFrameIndex = Math.min(
+      const nextFrameIndex = Math.min(
         TOTAL_FRAMES - 1,
         Math.floor(elapsed / FRAME_DURATION)
       );
 
-      const calculatedProgress = Math.min(
-        100,
-        Math.floor((elapsed / TOTAL_SEQUENCE_DURATION) * 100)
-      );
+      if (nextFrameIndex !== currentFrameIndex) {
+        currentFrameIndex = nextFrameIndex;
+        if (imgRef.current) {
+          const loadedImg = imagesRef.current[currentFrameIndex];
+          imgRef.current.src = loadedImg ? loadedImg.src : getFramePath(currentFrameIndex + 1);
+          setFrameOpacity(1);
+        }
+      }
 
-      setProgress(calculatedProgress);
-
-      if (calculatedFrameIndex !== lastDrawnFrameRef.current) {
-        drawFrame(calculatedFrameIndex);
+      if (progressBarRef.current) {
+        const pct = Math.min(100, (elapsed / TOTAL_SEQUENCE_DURATION) * 100);
+        progressBarRef.current.style.width = `${pct}%`;
       }
 
       if (elapsed >= TOTAL_SEQUENCE_DURATION) {
-        dismissSplash();
-      } else {
-        rafIdRef.current = requestAnimationFrame(animate);
+        finishSplash();
+        return;
       }
+
+      rafIdRef.current = requestAnimationFrame(animate);
     };
 
-    // Start loop
     rafIdRef.current = requestAnimationFrame(animate);
 
-    // Safety fallback timeout (13 seconds max)
-    const fallbackTimer = setTimeout(() => {
-      if (!isDismissedRef.current) {
-        dismissSplash();
+    const fallbackTimeout = setTimeout(() => {
+      if (!isFinishedRef.current) {
+        finishSplash();
       }
     }, TOTAL_SEQUENCE_DURATION + 3000);
 
     return () => {
-      clearTimeout(wordmarkTimer);
-      clearTimeout(fallbackTimer);
+      clearTimeout(fallbackTimeout);
       if (rafIdRef.current !== null) {
         cancelAnimationFrame(rafIdRef.current);
       }
     };
-  }, [isVisible, dismissSplash]);
+  }, [isVisible, finishSplash]);
 
   if (!isVisible) return null;
 
   return (
-    <div
-      onClick={dismissSplash}
-      role="button"
-      tabIndex={0}
-      aria-label="SPARK intro splash screen. Click or press Escape to skip."
-      className={`fixed inset-0 z-[9999] bg-black text-white flex flex-col items-center justify-center select-none cursor-pointer overflow-hidden transition-opacity duration-700 ease-in-out ${
-        isFadingOut ? "opacity-0 pointer-events-none" : "opacity-100"
-      }`}
-    >
-      {/* Background ambient glow */}
-      <div className="absolute inset-0 bg-radial-gradient from-purple-900/20 via-black to-black pointer-events-none" />
+    <>
+      <style>{`
+        @keyframes spark-reveal {
+          0% {
+            opacity: 0;
+            transform: scale(0.92);
+            filter: blur(10px);
+          }
+          60% {
+            opacity: 1;
+            filter: blur(0);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1);
+            filter: blur(0);
+          }
+        }
 
-      <div className="relative z-10 flex flex-col items-center justify-center max-w-4xl px-4 w-full h-full">
-        {/* SPARK Wordmark Reveal */}
-        <div
-          className={`transition-all duration-1000 ease-out mb-6 text-center ${
-            wordmarkVisible
-              ? "opacity-100 scale-100 blur-0"
-              : "opacity-0 scale-90 blur-md"
-          }`}
+        .spark-brand-reveal {
+          animation: spark-reveal 1200ms cubic-bezier(.16, 1, .3, 1) forwards;
+        }
+      `}</style>
+
+      <div
+        id="splash"
+        onClick={finishSplash}
+        role="button"
+        tabIndex={0}
+        aria-label="SPARK intro splash screen. Click or press Escape to skip."
+        className={`fixed inset-0 z-[9999] flex items-center justify-center bg-black transition-all duration-[900ms] ease-in-out cursor-pointer select-none overflow-hidden ${
+          isHiding ? "opacity-0 pointer-events-none invisible" : "opacity-100 visible"
+        }`}
+      >
+        {/* Responsive Frame Image */}
+        <img
+          ref={imgRef}
+          id="frame"
+          alt=""
+          draggable="false"
+          style={{ opacity: frameOpacity }}
+          className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none transition-opacity duration-100 ease-linear"
+        />
+
+        {/* Brand Typography */}
+        <h1
+          id="brand"
+          className="relative z-10 text-white font-extrabold tracking-[0.22em] pl-[0.22em] text-center spark-brand-reveal mix-blend-difference drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)]"
+          style={{ fontSize: "clamp(42px, 12vw, 120px)" }}
         >
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter bg-gradient-to-r from-white via-neutral-200 to-neutral-500 bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(255,255,255,0.3)]">
-            SPARK.
-          </h1>
-        </div>
+          SPARK
+        </h1>
 
-        {/* Animation Canvas */}
-        <div className="relative w-full max-w-2xl aspect-[16/9] flex items-center justify-center overflow-hidden my-4 rounded-xl shadow-2xl border border-white/10 bg-neutral-950/50 backdrop-blur-sm">
-          <canvas
-            ref={canvasRef}
-            className="w-full h-full object-contain pointer-events-none"
-            width={800}
-            height={450}
+        {/* Progress Bar */}
+        <div
+          id="progress"
+          className="absolute bottom-[38px] left-1/2 -translate-x-1/2 w-[100px] h-[1px] bg-[#222] overflow-hidden pointer-events-none z-10"
+        >
+          <div
+            ref={progressBarRef}
+            id="progress-bar"
+            className="w-0 h-full bg-white transition-[width] duration-75 ease-linear"
           />
         </div>
-
-        {/* Progress Indicator & Skip Prompt */}
-        <div className="w-full max-w-md mt-6 flex flex-col items-center gap-3">
-          <div className="w-full bg-neutral-800/80 h-1.5 rounded-full overflow-hidden p-[1px] border border-white/10">
-            <div
-              className="bg-white h-full rounded-full transition-all duration-100 ease-linear shadow-[0_0_10px_rgba(255,255,255,0.8)]"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-
-          <div className="flex items-center justify-between w-full text-xs font-mono text-neutral-400">
-            <span>{progress}%</span>
-            <span className="text-neutral-500 hover:text-white transition-colors">
-              Click anywhere to skip ✕
-            </span>
-          </div>
-        </div>
       </div>
-    </div>
+    </>
   );
 }
