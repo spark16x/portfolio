@@ -225,14 +225,6 @@ export default function SplashScreen() {
           className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none transition-opacity duration-100 ease-linear"
         />
 
-        {/* Brand Typography */}
-        <h1
-          id="brand"
-          className="relative z-10 text-white font-extrabold tracking-[0.22em] pl-[0.22em] text-center spark-brand-reveal mix-blend-difference drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)]"
-          style={{ fontSize: "clamp(42px, 12vw, 120px)" }}
-        >
-          SPARK
-        </h1>
 
         {/* Progress Bar */}
         <div
