@@ -1,177 +1,103 @@
-import React, { useEffect, useRef, useState, useCallback } from "react";
+
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Volume2, VolumeX } from "lucide-react";
 
 const TOTAL_FRAMES = 100;
 const FPS = 10;
-const FRAME_DURATION = 1000 / FPS; // 100ms per frame
-const TOTAL_SEQUENCE_DURATION = TOTAL_FRAMES * FRAME_DURATION; // 10000ms = 10s
+const FRAME_DURATION = 1000 / FPS;
+const TOTAL_SEQUENCE_DURATION = TOTAL_FRAMES * FRAME_DURATION;
 const STORAGE_KEY = "has_seen_spark_splash";
+
+const AUDIO_PATH = "/audio/spark.mp3";
 
 export default function SplashScreen() {
   const [isVisible, setIsVisible] = useState<boolean>(() => {
     try {
       return !sessionStorage.getItem(STORAGE_KEY);
     } catch {
-      return false;
+      return true;
     }
   });
 
-  const [isHiding, setIsHiding] = useState<boolean>(false);
-  const [frameOpacity, setFrameOpacity] = useState<number>(0);
-  const [isMuted, setIsMuted] = useState<boolean>(false);
+  const [isHiding, setIsHiding] = useState(false);
+  const [frameOpacity, setFrameOpacity] = useState(0);
+  const [isMuted, setIsMuted] = useState(false);
 
   const imgRef = useRef<HTMLImageElement | null>(null);
   const progressBarRef = useRef<HTMLDivElement | null>(null);
-  const isFinishedRef = useRef<boolean>(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const isFinishedRef = useRef(false);
   const rafIdRef = useRef<number | null>(null);
   const imagesRef = useRef<(HTMLImageElement | null)[]>([]);
+  const startTimeRef = useRef<number | null>(null);
 
-  // Web Audio Context & Gain references
-  const audioCtxRef = useRef<AudioContext | null>(null);
-  const masterGainRef = useRef<GainNode | null>(null);
-  const audioStartedRef = useRef<boolean>(false);
+  const getFramePath = (number: number) =>
+    `/Frames/frame_${String(number).padStart(3, "0")}.png`;
 
-  const getFramePath = (number: number) => {
-    return `/Frames/frame_${String(number).padStart(3, "0")}.png`;
-  };
-
-  const markSessionStorage = () => {
+  const markSessionStorage = useCallback(() => {
     try {
       sessionStorage.setItem(STORAGE_KEY, "true");
-    } catch (e) {
-      console.warn("Unable to save splash state in sessionStorage:", e);
+    } catch {
+      // Session storage may be unavailable.
     }
-  };
+  }, []);
 
-  // Web Audio Synth sound generator for futuristic splash soundscape
+  // Start the external MP3 file.
   const startAudio = useCallback(() => {
-    if (audioStartedRef.current || isFinishedRef.current) return;
-    try {
-      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-      if (!AudioCtx) return;
+    const audio = audioRef.current;
 
-      const ctx = new AudioCtx();
-      audioCtxRef.current = ctx;
+    if (!audio || isFinishedRef.current) return;
 
-      if (ctx.state === "suspended") {
-        ctx.resume();
-      }
+    audio.muted = isMuted;
 
-      const masterGain = ctx.createGain();
-      masterGain.gain.setValueAtTime(0.18, ctx.currentTime);
-      masterGain.connect(ctx.destination);
-      masterGainRef.current = masterGain;
-
-      const now = ctx.currentTime;
-
-      // 1. Low Sub-Bass Ambient Pad (60Hz -> 40Hz)
-      const subOsc = ctx.createOscillator();
-      const subGain = ctx.createGain();
-      subOsc.type = "sine";
-      subOsc.frequency.setValueAtTime(60, now);
-      subOsc.frequency.exponentialRampToValueAtTime(40, now + 9);
-      subGain.gain.setValueAtTime(0.001, now);
-      subGain.gain.linearRampToValueAtTime(0.35, now + 1.5);
-      subGain.gain.exponentialRampToValueAtTime(0.001, now + 9.5);
-      subOsc.connect(subGain);
-      subGain.connect(masterGain);
-      subOsc.start(now);
-      subOsc.stop(now + 10);
-
-      // 2. Mid Synth Drone with Low-pass Filter Sweep
-      const droneOsc = ctx.createOscillator();
-      const droneFilter = ctx.createBiquadFilter();
-      const droneGain = ctx.createGain();
-      droneOsc.type = "sawtooth";
-      droneOsc.frequency.setValueAtTime(110, now); // A2
-      droneFilter.type = "lowpass";
-      droneFilter.frequency.setValueAtTime(200, now);
-      droneFilter.frequency.exponentialRampToValueAtTime(1800, now + 5);
-      droneFilter.frequency.exponentialRampToValueAtTime(300, now + 9.5);
-      droneGain.gain.setValueAtTime(0.001, now);
-      droneGain.gain.linearRampToValueAtTime(0.12, now + 2);
-      droneGain.gain.exponentialRampToValueAtTime(0.001, now + 9.5);
-      droneOsc.connect(droneFilter);
-      droneFilter.connect(droneGain);
-      droneGain.connect(masterGain);
-      droneOsc.start(now);
-      droneOsc.stop(now + 10);
-
-      // 3. Arpeggiated Ambient Chords (Spark Rising Notes)
-      const arpeggioNotes = [220, 277.18, 329.63, 440, 554.37, 659.25, 880, 1108.73]; // A major 7th harmonic sequence
-      arpeggioNotes.forEach((freq, index) => {
-        const noteTime = now + 0.3 + index * 0.8;
-        if (noteTime >= now + 8.5) return;
-
-        const arpOsc = ctx.createOscillator();
-        const arpGain = ctx.createGain();
-        arpOsc.type = "triangle";
-        arpOsc.frequency.setValueAtTime(freq, noteTime);
-
-        arpGain.gain.setValueAtTime(0.001, noteTime);
-        arpGain.gain.linearRampToValueAtTime(0.08, noteTime + 0.1);
-        arpGain.gain.exponentialRampToValueAtTime(0.0001, noteTime + 1.8);
-
-        arpOsc.connect(arpGain);
-        arpGain.connect(masterGain);
-        arpOsc.start(noteTime);
-        arpOsc.stop(noteTime + 2.0);
+    if (audio.paused) {
+      void audio.play().catch((error: unknown) => {
+        // Browsers may block playback until user interaction.
+        console.warn("SPARK audio playback was blocked:", error);
       });
-
-      // 4. Sparkle / Shimmer High Frequency Rise towards climax
-      const shimmerTime = now + 4.5;
-      const shimmerOsc = ctx.createOscillator();
-      const shimmerGain = ctx.createGain();
-      shimmerOsc.type = "sine";
-      shimmerOsc.frequency.setValueAtTime(880, shimmerTime);
-      shimmerOsc.frequency.exponentialRampToValueAtTime(3520, shimmerTime + 3);
-      shimmerGain.gain.setValueAtTime(0.001, shimmerTime);
-      shimmerGain.gain.linearRampToValueAtTime(0.05, shimmerTime + 1.5);
-      shimmerGain.gain.exponentialRampToValueAtTime(0.0001, shimmerTime + 3.5);
-      shimmerOsc.connect(shimmerGain);
-      shimmerGain.connect(masterGain);
-      shimmerOsc.start(shimmerTime);
-      shimmerOsc.stop(shimmerTime + 3.8);
-
-      audioStartedRef.current = true;
-    } catch (e) {
-      console.warn("Failed to start splash audio:", e);
     }
-  }, []);
+  }, [isMuted]);
 
+  // Fade out audio before stopping playback.
   const stopAudio = useCallback(() => {
-    if (audioCtxRef.current && masterGainRef.current) {
-      try {
-        const ctx = audioCtxRef.current;
-        const gain = masterGainRef.current;
-        gain.gain.setValueAtTime(gain.gain.value, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.4);
-        setTimeout(() => {
-          if (ctx.state !== "closed") {
-            ctx.close().catch(() => {});
-          }
-        }, 500);
-      } catch (e) {
-        console.warn("Error stopping splash audio:", e);
-      }
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    audio.pause();
+
+    try {
+      audio.currentTime = 0;
+    } catch {
+      // Ignore media seeking errors.
     }
   }, []);
 
-  const toggleMute = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsMuted((prev) => {
-      const next = !prev;
-      if (masterGainRef.current && audioCtxRef.current) {
-        const now = audioCtxRef.current.currentTime;
-        masterGainRef.current.gain.setValueAtTime(masterGainRef.current.gain.value, now);
-        masterGainRef.current.gain.linearRampToValueAtTime(next ? 0 : 0.18, now + 0.1);
-      }
-      return next;
-    });
-  };
+  const toggleMute = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation();
+
+      setIsMuted((previous) => {
+        const next = !previous;
+
+        if (audioRef.current) {
+          audioRef.current.muted = next;
+        }
+
+        return next;
+      });
+    },
+    []
+  );
 
   const finishSplash = useCallback(() => {
     if (isFinishedRef.current) return;
+
     isFinishedRef.current = true;
 
     if (rafIdRef.current !== null) {
@@ -183,39 +109,40 @@ export default function SplashScreen() {
     markSessionStorage();
     setIsHiding(true);
 
-    setTimeout(() => {
+    window.setTimeout(() => {
       document.body.style.overflow = "";
       setIsVisible(false);
     }, 900);
-  }, [stopAudio]);
+  }, [markSessionStorage, stopAudio]);
 
-  // Keyboard skip handler
+  // Keyboard controls.
   useEffect(() => {
     if (!isVisible) return;
 
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Any user interaction enables audio context if suspended
-      if (!audioStartedRef.current) {
-        startAudio();
-      }
-
-      if (e.key === "Escape" || e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (
+        event.key === "Escape" ||
+        event.key === "Enter" ||
+        event.key === " "
+      ) {
+        event.preventDefault();
         finishSplash();
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
+
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isVisible, finishSplash, startAudio]);
+  }, [isVisible, finishSplash]);
 
-  // Preloading & Animation lifecycle
+  // Frame preloading and playback.
   useEffect(() => {
     if (!isVisible) return;
 
-    // Lock body scroll during splash display
+    isFinishedRef.current = false;
+    startTimeRef.current = null;
     document.body.style.overflow = "hidden";
 
     const reducedMotion = window.matchMedia(
@@ -224,86 +151,102 @@ export default function SplashScreen() {
 
     if (reducedMotion) {
       finishSplash();
-      return;
+      return () => {
+        document.body.style.overflow = "";
+      };
     }
 
-    // Try starting audio on mount
-    startAudio();
+    const images = new Array<HTMLImageElement | null>(
+      TOTAL_FRAMES
+    ).fill(null);
 
-    // Interaction fallback to unlock Web Audio if autoplay was blocked
-    const unlockAudio = () => {
-      if (!audioStartedRef.current) {
-        startAudio();
-      }
-    };
-    window.addEventListener("click", unlockAudio, { once: true });
-    window.addEventListener("touchstart", unlockAudio, { once: true });
+    imagesRef.current = images;
 
-    // Preload frames array
-    imagesRef.current = new Array(TOTAL_FRAMES).fill(null);
+    let cancelled = false;
+    let currentFrameIndex = -1;
 
-    const loadFrame = (index: number): Promise<HTMLImageElement> => {
+    const loadFrame = (index: number): Promise<void> => {
       return new Promise((resolve) => {
-        const img = new Image();
-        img.src = getFramePath(index + 1);
-        img.onload = () => {
-          imagesRef.current[index] = img;
-          resolve(img);
+        const image = new Image();
+
+        image.onload = () => {
+          if (!cancelled) {
+            images[index] = image;
+
+            // Display the first frame as soon as it loads.
+            if (index === 0 && imgRef.current) {
+              imgRef.current.src = image.src;
+              setFrameOpacity(1);
+            }
+          }
+
+          resolve();
         };
-        img.onerror = () => {
-          resolve(img);
+
+        image.onerror = () => {
+          console.warn(`Unable to load ${getFramePath(index + 1)}`);
+          resolve();
         };
+
+        image.src = getFramePath(index + 1);
       });
     };
 
-    // Preload initial frames batch first, then rest
+    // Load the first 10 frames before loading the rest.
     const preloadFrames = async () => {
-      const firstBatch = [];
-      for (let i = 0; i < Math.min(10, TOTAL_FRAMES); i++) {
-        firstBatch.push(loadFrame(i));
-      }
-      await Promise.all(firstBatch);
+      await Promise.all(
+        Array.from(
+          { length: Math.min(10, TOTAL_FRAMES) },
+          (_, index) => loadFrame(index)
+        )
+      );
 
-      if (imgRef.current && imagesRef.current[0]) {
-        imgRef.current.src = imagesRef.current[0].src;
-        setFrameOpacity(1);
-      }
+      if (cancelled || isFinishedRef.current) return;
 
+      // Continue loading the remaining frames in the background.
       for (let i = 10; i < TOTAL_FRAMES; i++) {
-        if (isFinishedRef.current) break;
-        loadFrame(i);
+        if (cancelled || isFinishedRef.current) break;
+        void loadFrame(i);
       }
     };
 
-    preloadFrames();
+    void preloadFrames();
 
-    // Playback loop
-    let startTime: number | null = null;
-    let currentFrameIndex = 0;
-
+    // Animation loop: 100 frames at 10 FPS = 10 seconds.
     const animate = (timestamp: number) => {
-      if (isFinishedRef.current) return;
+      if (cancelled || isFinishedRef.current) return;
 
-      if (!startTime) startTime = timestamp;
+      if (startTimeRef.current === null) {
+        startTimeRef.current = timestamp;
+      }
 
-      const elapsed = timestamp - startTime;
-      const nextFrameIndex = Math.min(
+      const elapsed = timestamp - startTimeRef.current;
+
+      const frameIndex = Math.min(
         TOTAL_FRAMES - 1,
         Math.floor(elapsed / FRAME_DURATION)
       );
 
-      if (nextFrameIndex !== currentFrameIndex) {
-        currentFrameIndex = nextFrameIndex;
+      if (frameIndex !== currentFrameIndex) {
+        currentFrameIndex = frameIndex;
+
+        const loadedImage = images[frameIndex];
+
         if (imgRef.current) {
-          const loadedImg = imagesRef.current[currentFrameIndex];
-          imgRef.current.src = loadedImg ? loadedImg.src : getFramePath(currentFrameIndex + 1);
+          imgRef.current.src =
+            loadedImage?.src || getFramePath(frameIndex + 1);
+
           setFrameOpacity(1);
         }
       }
 
       if (progressBarRef.current) {
-        const pct = Math.min(100, (elapsed / TOTAL_SEQUENCE_DURATION) * 100);
-        progressBarRef.current.style.width = `${pct}%`;
+        const progress = Math.min(
+          100,
+          (elapsed / TOTAL_SEQUENCE_DURATION) * 100
+        );
+
+        progressBarRef.current.style.width = `${progress}%`;
       }
 
       if (elapsed >= TOTAL_SEQUENCE_DURATION) {
@@ -316,22 +259,24 @@ export default function SplashScreen() {
 
     rafIdRef.current = requestAnimationFrame(animate);
 
-    const fallbackTimeout = setTimeout(() => {
-      if (!isFinishedRef.current) {
-        finishSplash();
-      }
+    // Safety timeout if the animation loop stalls.
+    const fallbackTimeout = window.setTimeout(() => {
+      finishSplash();
     }, TOTAL_SEQUENCE_DURATION + 3000);
 
     return () => {
-      clearTimeout(fallbackTimeout);
-      window.removeEventListener("click", unlockAudio);
-      window.removeEventListener("touchstart", unlockAudio);
-      stopAudio();
+      cancelled = true;
+      window.clearTimeout(fallbackTimeout);
+
       if (rafIdRef.current !== null) {
         cancelAnimationFrame(rafIdRef.current);
+        rafIdRef.current = null;
       }
+
+      stopAudio();
+      document.body.style.overflow = "";
     };
-  }, [isVisible, finishSplash, startAudio, stopAudio]);
+  }, [isVisible, finishSplash, stopAudio]);
 
   if (!isVisible) return null;
 
@@ -344,10 +289,12 @@ export default function SplashScreen() {
             transform: scale(0.92);
             filter: blur(10px);
           }
+
           60% {
             opacity: 1;
             filter: blur(0);
           }
+
           100% {
             opacity: 1;
             transform: scale(1);
@@ -356,9 +303,25 @@ export default function SplashScreen() {
         }
 
         .spark-brand-reveal {
-          animation: spark-reveal 1200ms cubic-bezier(.16, 1, .3, 1) forwards;
+          animation: spark-reveal 1200ms
+            cubic-bezier(.16, 1, .3, 1) forwards;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .spark-brand-reveal {
+            animation: none;
+          }
         }
       `}</style>
+
+      {/* Custom MP3 soundtrack */}
+      <audio
+        ref={audioRef}
+        src={AUDIO_PATH}
+        preload="auto"
+        loop={false}
+        muted={isMuted}
+      />
 
       <div
         id="splash"
@@ -366,16 +329,35 @@ export default function SplashScreen() {
         role="button"
         tabIndex={0}
         aria-label="SPARK intro splash screen. Click or press Escape to skip."
-        className={`fixed inset-0 z-[9999] flex items-center justify-center bg-black transition-all duration-[900ms] ease-in-out cursor-pointer select-none overflow-hidden ${
-          isHiding ? "opacity-0 pointer-events-none invisible" : "opacity-100 visible"
-        }`}
+        className={`
+          fixed inset-0 z-[9999]
+          flex items-center justify-center
+          bg-black cursor-pointer select-none
+          overflow-hidden
+          transition-opacity duration-[900ms] ease-in-out
+          ${
+            isHiding
+              ? "opacity-0 pointer-events-none invisible"
+              : "opacity-100 visible"
+          }
+        `}
       >
-        {/* Mute / Unmute Control Button */}
+        {/* Sound control */}
         <button
+          type="button"
           onClick={toggleMute}
           aria-label={isMuted ? "Unmute splash sound" : "Mute splash sound"}
           title={isMuted ? "Unmute sound" : "Mute sound"}
-          className="absolute top-6 right-6 z-20 p-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white backdrop-blur-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50"
+          className="
+            absolute top-6 right-6 z-20
+            p-2.5 rounded-full
+            bg-white/10 hover:bg-white/20
+            border border-white/20
+            text-white backdrop-blur-md
+            transition-colors duration-200
+            focus:outline-none focus:ring-2
+            focus:ring-white/50
+          "
         >
           {isMuted ? (
             <VolumeX className="w-5 h-5 text-white/70" />
@@ -384,25 +366,37 @@ export default function SplashScreen() {
           )}
         </button>
 
-        {/* Responsive Frame Image */}
+        {/* Animation frames */}
         <img
           ref={imgRef}
           id="frame"
           alt=""
-          draggable="false"
+          draggable={false}
           style={{ opacity: frameOpacity }}
-          className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none transition-opacity duration-100 ease-linear"
+          className="
+            absolute inset-0
+            w-full h-full
+            object-contain
+            pointer-events-none select-none
+            transition-opacity duration-100 ease-linear
+          "
         />
 
-        {/* Progress Bar */}
+        {/* Progress indicator */}
         <div
           id="progress"
-          className="absolute bottom-[38px] left-1/2 -translate-x-1/2 w-[100px] h-[1px] bg-[#222] overflow-hidden pointer-events-none z-10"
+          className="
+            absolute bottom-[38px]
+            left-1/2 -translate-x-1/2
+            w-[100px] h-[1px]
+            bg-[#222] overflow-hidden
+            pointer-events-none z-10
+          "
         >
           <div
             ref={progressBarRef}
             id="progress-bar"
-            className="w-0 h-full bg-white transition-[width] duration-75 ease-linear"
+            className="w-0 h-full bg-white"
           />
         </div>
       </div>
