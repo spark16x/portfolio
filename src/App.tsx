@@ -11,6 +11,7 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import BackToTop from "./components/BackToTop";
 import ClickSpark from "./components/ClickSpark";
+import SplashScreen from "./components/SplashScreen";
 
 export default function App() {
   const [activeSection, setActiveSection] = useState<string>("home");
@@ -65,55 +66,58 @@ export default function App() {
   });
 
   return (
-    <ReactLenis
-      root
-      options={{
-        lerp: 0.1,
-        duration: 1.2,
-        smoothWheel: true,
-        touchMultiplier: 2,
-      }}
-    >
-      <ClickSpark
-        sparkColor={theme === "dark" ? "#fff" : "#000"}
-        sparkSize={10}
-        sparkRadius={15}
-        sparkCount={8}
-        duration={400}
+    <>
+      <SplashScreen />
+      <ReactLenis
+        root
+        options={{
+          lerp: 0.1,
+          duration: 1.2,
+          smoothWheel: true,
+          touchMultiplier: 2,
+        }}
       >
-        <div className="min-h-screen bg-background text-on-surface font-body-md overflow-x-hidden selection:bg-primary selection:text-on-primary">
-          <AtmosphericBlurs />
-          <Navbar activeSection={activeSection} />
-          <main className="max-w-container-max mx-auto px-gutter">
-            <Hero />
-            <div className="w-screen relative left-1/2 -translate-x-1/2 overflow-hidden">
-              <TextLoop
-                text="spark"
-                shape="line"
-                speed={90}
-                direction="forward"
-                separator="✦"
-                curviness={90}
-                fontSize={46}
-                fontWeight={800}
-                letterSpacing={2}
-                uppercase
-                color={theme === 'dark' ? '#ffffff' : '#000000'}
-                ribbon
-                ribbonColor={theme === 'dark' ? '#5227FF' : '#E8E2FF'}
-                ribbonWidth={86}
-                pauseOnHover
-              />
-            </div>
-            <About />
-            <Skills />
-            <Clients />
-            <Contact />
-          </main>
-          <Footer />
-          <BackToTop />
-        </div>
-      </ClickSpark>
-    </ReactLenis>
+        <ClickSpark
+          sparkColor={theme === "dark" ? "#fff" : "#000"}
+          sparkSize={10}
+          sparkRadius={15}
+          sparkCount={8}
+          duration={400}
+        >
+          <div className="min-h-screen bg-background text-on-surface font-body-md overflow-x-hidden selection:bg-primary selection:text-on-primary">
+            <AtmosphericBlurs />
+            <Navbar activeSection={activeSection} />
+            <main className="max-w-container-max mx-auto px-gutter">
+              <Hero />
+              <div className="w-screen relative left-1/2 -translate-x-1/2 overflow-hidden">
+                <TextLoop
+                  text="spark"
+                  shape="line"
+                  speed={90}
+                  direction="forward"
+                  separator="✦"
+                  curviness={90}
+                  fontSize={46}
+                  fontWeight={800}
+                  letterSpacing={2}
+                  uppercase
+                  color={theme === 'dark' ? '#ffffff' : '#000000'}
+                  ribbon
+                  ribbonColor={theme === 'dark' ? '#5227FF' : '#E8E2FF'}
+                  ribbonWidth={86}
+                  pauseOnHover
+                />
+              </div>
+              <About />
+              <Skills />
+              <Clients />
+              <Contact />
+            </main>
+            <Footer />
+            <BackToTop />
+          </div>
+        </ClickSpark>
+      </ReactLenis>
+    </>
   );
 }
