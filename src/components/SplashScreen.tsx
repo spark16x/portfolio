@@ -1,4 +1,3 @@
-
 import React, {
   useCallback,
   useEffect,
@@ -87,6 +86,11 @@ export default function SplashScreen() {
 
         if (audioRef.current) {
           audioRef.current.muted = next;
+          if (!next && audioRef.current.paused && !isFinishedRef.current) {
+            void audioRef.current.play().catch((error: unknown) => {
+              console.warn("SPARK audio playback was blocked:", error);
+            });
+          }
         }
 
         return next;
@@ -137,7 +141,7 @@ export default function SplashScreen() {
     };
   }, [isVisible, finishSplash]);
 
-  // Frame preloading and playback.
+  // Frame preloading, audio play, and animation playback.
   useEffect(() => {
     if (!isVisible) return;
 
@@ -155,6 +159,18 @@ export default function SplashScreen() {
         document.body.style.overflow = "";
       };
     }
+
+    // Attempt to start audio immediately when splash screen is active
+    startAudio();
+
+    // Fallback: start audio on user interaction if autoplay was blocked
+    const handleUserInteraction = () => {
+      startAudio();
+    };
+
+    window.addEventListener("pointerdown", handleUserInteraction, { once: true });
+    window.addEventListener("click", handleUserInteraction, { once: true });
+    window.addEventListener("keydown", handleUserInteraction, { once: true });
 
     const images = new Array<HTMLImageElement | null>(
       TOTAL_FRAMES
@@ -267,6 +283,9 @@ export default function SplashScreen() {
     return () => {
       cancelled = true;
       window.clearTimeout(fallbackTimeout);
+      window.removeEventListener("pointerdown", handleUserInteraction);
+      window.removeEventListener("click", handleUserInteraction);
+      window.removeEventListener("keydown", handleUserInteraction);
 
       if (rafIdRef.current !== null) {
         cancelAnimationFrame(rafIdRef.current);
@@ -276,7 +295,7 @@ export default function SplashScreen() {
       stopAudio();
       document.body.style.overflow = "";
     };
-  }, [isVisible, finishSplash, stopAudio]);
+  }, [isVisible, finishSplash, startAudio, stopAudio]);
 
   if (!isVisible) return null;
 
@@ -319,6 +338,7 @@ export default function SplashScreen() {
         ref={audioRef}
         src={AUDIO_PATH}
         preload="auto"
+        autoPlay
         loop={false}
         muted={isMuted}
       />
